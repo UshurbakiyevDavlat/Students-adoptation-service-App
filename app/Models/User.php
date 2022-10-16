@@ -18,6 +18,7 @@ class User extends Authenticatable implements JWTSubject
     use HasRoles;
     use Notifiable;
 
+    protected $with = ['hobbies'];
     /**
      * The attributes that are mass assignable.
      *
