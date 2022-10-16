@@ -12,13 +12,13 @@ class UserProfileController extends Controller
     public function fillProfile(User $user, UserFillProfileRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $hobbies_ids = $data['hobbies_ids'];
-
-        unset($data['hobbies_ids']);
-
         try {
             $user->update($data);
-            $user->hobbies()->sync($hobbies_ids);
+            if (isset($data['hobbies_ids'])) {
+                $hobbies_ids = $data['hobbies_ids'];
+                unset($data['hobbies_ids']);
+                $user->hobbies()->sync($hobbies_ids);
+            }
         } catch (\Exception $exception) {
             Log::error('debug', ['trace' => $exception->getTraceAsString()]);
             return response()->json(['message' => 'Произошла ошибка.Профиль не обновлен.'], 400);
