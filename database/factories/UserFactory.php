@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
+use App\Models\Speciality;
+use App\Models\University;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -16,10 +19,16 @@ class UserFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
+            'phone' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'phone_verified_at' => now(),
+            'birth_date' => $this->faker->dateTime(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'speciality_id' => Speciality::all()->random()->id,
+            'university_id' =>  University::all()->random()->id,
+            'city_id' => City::all()->random()->id,
         ];
     }
 

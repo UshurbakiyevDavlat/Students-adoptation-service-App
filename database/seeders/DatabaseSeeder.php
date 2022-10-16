@@ -2,6 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
+use App\Models\Hobby;
+use App\Models\Speciality;
+use App\Models\University;
+use App\Models\User;
+use App\Models\UserHasHobbies;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -15,7 +21,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        City::factory(10)->create();
+        Hobby::factory(10)->create();
+        University::factory(10)->create();
+        Speciality::factory(10)->create();
+        User::factory(10)->create();
+        UserHasHobbies::factory(10)->create();
 
         $admin = Role::create(['name' => 'admin']);
         $user = Role::create(['name' => 'user']);
