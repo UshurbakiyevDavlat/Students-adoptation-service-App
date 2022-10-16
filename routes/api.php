@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +31,7 @@ Route::prefix('user')->group(
         Route::get('/{user}', [UserController::class, 'show']);
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'create']);
+        Route::post('/profile/{user}', [UserProfileController::class, 'fillProfile'])->name('profile.update');
         Route::patch('/{user}', [UserController::class, 'update']);
         Route::delete('/{user}', [UserController::class, 'delete'])->middleware('admin');
     });

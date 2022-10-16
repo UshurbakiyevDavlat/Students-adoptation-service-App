@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -23,6 +25,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'phone',
+        'name',
+        'email',
+        'birth_date',
+        'city_id',
+        'university_id',
+        'speciality_id',
         'password',
     ];
 
@@ -65,6 +73,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims(): array
     {
         return [];
+    }
+
+    public function hobbies(): BelongsToMany
+    {
+        return $this->belongsToMany(Hobby::class,'user_has_hobbies','user_id','hobby_id')->withTimestamps();
     }
 
 }
