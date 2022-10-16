@@ -20,9 +20,9 @@ Route::group([
     'prefix' => 'auth'
 ], static function () {
     Route::post('login', [AuthController::class,'login']);
-    Route::post('logout',  [AuthController::class,'logout']);
-    Route::post('refresh',  [AuthController::class,'refresh']);
-    Route::post('me',  [AuthController::class,'me']);
+    Route::get('logout',  [AuthController::class,'logout']);
+    Route::get('refresh',  [AuthController::class,'refresh']);
+    Route::get('me',  [AuthController::class,'me']);
 });
 
 Route::prefix('user')->group(
@@ -31,7 +31,7 @@ Route::prefix('user')->group(
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'create']);
         Route::patch('/{user}', [UserController::class, 'update']);
-        Route::delete('/{user}', [UserController::class, 'delete']);
+        Route::delete('/{user}', [UserController::class, 'delete'])->middleware('isAdmin');
     });
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
