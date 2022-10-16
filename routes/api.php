@@ -31,7 +31,7 @@ Route::prefix('user')->group(
         Route::get('/', [UserController::class, 'index']);
         Route::post('/', [UserController::class, 'create']);
         Route::patch('/{user}', [UserController::class, 'update']);
-        Route::delete('/{user}', [UserController::class, 'delete'])->middleware('isAdmin');
+        Route::delete('/{user}', [UserController::class, 'delete'])->middleware('admin');
     });
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
