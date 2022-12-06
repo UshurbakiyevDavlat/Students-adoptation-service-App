@@ -7,4 +7,4 @@ Based on laravel.
 - [Mysql 5.7 database]
 - [Nginx latest]
 
-Backend for mobile application. RestAPI. Unit Tests. Websockets. Filters. Pagination.
+Backend for mobile application. RestAPI. Unit Tests. Websockets. Filters. Pagination. Swagger.
