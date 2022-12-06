@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Profile;
 
-use App\Http\Requests\UserCreateRequest;
-use App\Http\Requests\UserUpdateRequest;
-use App\Http\Resources\User as UserResource;
-use App\Http\Resources\UserCollection;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Profile\UserCreateRequest;
+use App\Http\Requests\Profile\UserUpdateRequest;
+use App\Http\Resources\Profile\User as UserResource;
+use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
