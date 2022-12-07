@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface SmsRepository
+interface SmsInterface
 {
     public function sendSms();
 }

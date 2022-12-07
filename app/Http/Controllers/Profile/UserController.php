@@ -85,6 +85,7 @@ class UserController extends Controller
         return User::create($userData);
     }
 
+    //TODO: Сделать анотацию для свагера
     public function update(UserUpdateRequest $userUpdateRequest, User $user): bool
     {
         $userData = $userUpdateRequest->validated();

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Interfaces\SmsRepository;
+use App\Interfaces\SmsInterface;
 use Illuminate\Support\Facades\Log;
 use Mobizon\Mobizon_ApiKey_Required;
 use Mobizon\Mobizon_Curl_Required;
@@ -12,7 +12,7 @@ use Mobizon\Mobizon_OpenSSL_Required;
 use Mobizon\Mobizon_Param_Required;
 use Mobizon\MobizonApi;
 
-class SmsService implements SmsRepository
+class SmsService implements SmsInterface
 {
     private $api;
 
