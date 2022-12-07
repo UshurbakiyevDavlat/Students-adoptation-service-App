@@ -11,7 +11,6 @@ use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -127,7 +126,7 @@ class UserController extends Controller
 
         $code = $status === Password::PASSWORD_RESET ? 200 : 100;
 
-        return response()->json(['text' => __($status),'status' => $code]);
+        return response()->json(['text' => __($status), 'status' => $code]);
     }
 
     /**
