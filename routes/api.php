@@ -34,6 +34,9 @@ Route::prefix('user')->group(
         Route::post('/profile/{user}', [UserProfileController::class, 'fillProfile'])
             ->middleware('auth')
             ->name('profile.update');
+        Route::post('/reset-password',[UserController::class,'resetPassword'])
+            ->middleware('guest')
+            ->name('password.update');
         Route::patch('/{user}', [UserController::class, 'update'])->middleware('auth');
         Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin']);
     });
