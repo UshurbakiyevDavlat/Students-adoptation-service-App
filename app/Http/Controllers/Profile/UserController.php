@@ -125,7 +125,9 @@ class UserController extends Controller
             }
         );
 
-        return response()->json(['text' => __($status),'status' => '200']);
+        $code = $status === Password::PASSWORD_RESET ? 200 : 100;
+
+        return response()->json(['text' => __($status),'status' => $code]);
     }
 
     /**
