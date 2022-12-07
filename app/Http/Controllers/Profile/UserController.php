@@ -101,6 +101,7 @@ class UserController extends Controller
         return $user->update($userData);
     }
 
+    //TODO: Сделать анотацию для свагера
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $token = Str::random(64);
