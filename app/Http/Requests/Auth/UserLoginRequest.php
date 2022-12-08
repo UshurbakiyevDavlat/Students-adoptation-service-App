@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ResetPasswordRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,11 +21,12 @@ class ResetPasswordRequest extends FormRequest
      *
      * @return array
      */
+    //TODO подумать как сделать валидацию на expires at у code
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
+            'phone' => 'required|exists:users,phone',
+            'password' => 'required|string',
             'code' => 'required|exists:user_entries_code,code',
         ];
     }

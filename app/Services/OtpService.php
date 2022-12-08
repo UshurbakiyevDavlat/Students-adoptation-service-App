@@ -17,6 +17,7 @@ class OtpService implements OtpInterface
 {
     private $text;
 
+    //TODO подумать как оптимизировать подобные методы, где стоит более 2 ретурнов
     public function sendOtp($user_phone): JsonResponse
     {
         $user = User::select(['id'])->where('phone', $user_phone)->first();

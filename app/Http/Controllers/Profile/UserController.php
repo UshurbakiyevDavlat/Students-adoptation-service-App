@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Profile\UserCreateRequest;
 use App\Http\Requests\Profile\UserUpdateRequest;
-use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;

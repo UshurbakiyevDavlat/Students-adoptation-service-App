@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\Auth\UserLoginRequest;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Services\OtpService;
@@ -31,6 +31,7 @@ class AuthController extends Controller
      * @param UserLoginRequest $request
      * @return JsonResponse
      */
+    //TODO подумать как оптимизировать подобные методы, где стоит более 2 ретурнов
     public function login(UserLoginRequest $request): JsonResponse
     {
         $credentials = $request->only(['phone', 'password']);
