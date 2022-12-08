@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Profile\UserController;
 use App\Http\Controllers\Profile\UserProfileController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,9 @@ Route::group([
     Route::get('refresh', [AuthController::class, 'refresh']);
     Route::get('me', [AuthController::class, 'me']);
 });
+
+//TODO сделать отдельный канал для логов
+Route::get('/setLocale/{locale}', [LocaleController::class, 'setLocale']);
 
 Route::prefix('send')->group(
     static function () {
