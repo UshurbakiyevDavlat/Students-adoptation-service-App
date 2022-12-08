@@ -29,7 +29,8 @@ class OtpService
 
         $user->notify(new SendOtpCode($this->text));
 
-        //TODO чтобы работало, нужны деньги на счет
+        //TODO чтобы работало, нужны деньги на счет,
+        // так же разобраться, если вернуло это сообщение то, нужно понять почему не отдает как ошибку.
         try {
             (new SmsService($user_phone, $this->text))->sendSms();
         } catch (Mobizon_ApiKey_Required|Mobizon_Curl_Required|Mobizon_OpenSSL_Required|Mobizon_Error $exception) {

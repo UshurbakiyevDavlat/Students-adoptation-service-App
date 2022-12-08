@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserLoginRequest;
+use App\Models\User;
+use App\Models\UserEntryCode;
 use App\Services\OtpService;
 use Illuminate\Http\JsonResponse;
 
@@ -32,6 +34,15 @@ class AuthController extends Controller
     public function login(UserLoginRequest $request): JsonResponse
     {
         $credentials = $request->only(['phone', 'password']);
+
+        //TODO Вот такие конструкции нужно выносить в отдельный сервис или метод,
+        // лучше сервис, позже надо найти вынести и заменить.
+        $entryCode = UserEntryCode::where('code', $request->code)->first();
+        $user = User::where('phone', $credentials['phone'])->first();
+
+        if ($entryCode && ($user->id !== $entryCode->user->id)) {
+            return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
+        }
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
