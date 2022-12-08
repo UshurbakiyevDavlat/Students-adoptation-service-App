@@ -15,6 +15,8 @@ use Mobizon\MobizonApi;
 class SmsService implements SmsInterface
 {
     private $api;
+    private $recipient;
+    private $text;
 
     /**
      * @throws Mobizon_Error
@@ -22,9 +24,11 @@ class SmsService implements SmsInterface
      * @throws Mobizon_OpenSSL_Required
      * @throws Mobizon_Curl_Required
      */
-    public function __construct()
+    public function __construct($recipient, $text)
     {
         $this->api = new MobizonApi(env('MOBIZON_API_KEY'), 'api.mobizon.kz');
+        $this->recipient = $recipient;
+        $this->text = $text;
     }
 
     /**
@@ -34,8 +38,8 @@ class SmsService implements SmsInterface
     public function sendSms()
     {
         $send = $this->api->call('message', 'sendSMSMessage', [
-            'recipient' => '77053685346',
-            'text' => 'Test sms message',
+            'recipient' => $this->recipient,
+            'text' => $this->text,
         ]);
 
         try {

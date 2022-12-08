@@ -9,6 +9,7 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
+use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
@@ -86,9 +87,9 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function create(UserCreateRequest $userCreateRequest)
+    public function create(UserCreateRequest $request)
     {
-        $userData = $userCreateRequest->validated();
+        $userData = $request->validated();
         $userData['password'] = Hash::make($userData['password']);
         return User::create($userData);
     }
@@ -106,6 +107,16 @@ class UserController extends Controller
     {
         $token = Str::random(64);
         $data = $request->only('email', 'password', 'password_confirmation');
+
+        //TODO Вот такие конструкции нужно выносить в отдельный сервис или метод,
+        // лучше сервис, позже надо найти вынести и заменить.
+        $entryCode = UserEntryCode::where('code', $request->code)->first();
+        $user = User::where('email', $data['email'])->first();
+
+        if ($entryCode && ($user->id !== $entryCode->user->id)) {
+            return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
+        }
+
         $data['token'] = $token;
 
         DB::table('password_resets')->insert([
