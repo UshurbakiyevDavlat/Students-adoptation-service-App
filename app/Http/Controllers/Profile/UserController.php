@@ -9,6 +9,7 @@ use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
+use App\Notifications\ResetPassword;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -120,6 +121,8 @@ class UserController extends Controller
                 ])->setRememberToken(Str::random(60));
 
                 $user->save();
+                $user->notify((new ResetPassword($password)));
+
                 event(new PasswordReset($user));
             }
         );
