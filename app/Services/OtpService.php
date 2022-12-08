@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Interfaces\OtpInterface;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Notifications\SendOtpCode;
@@ -12,7 +13,7 @@ use Mobizon\Mobizon_Curl_Required;
 use Mobizon\Mobizon_Error;
 use Mobizon\Mobizon_OpenSSL_Required;
 
-class OtpService
+class OtpService implements OtpInterface
 {
     private $text;
 
