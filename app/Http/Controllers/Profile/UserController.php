@@ -5,10 +5,17 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UserCreateRequest;
 use App\Http\Requests\Profile\UserUpdateRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
+use App\Notifications\ResetPassword;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
 class UserController extends Controller
@@ -28,6 +35,7 @@ class UserController extends Controller
     {
         return UserCollection::make(User::all());
     }
+
     /**
      * @OA\Get(
      *     path="/api/user/{id}",
@@ -91,6 +99,37 @@ class UserController extends Controller
         $userData = $userUpdateRequest->validated();
 
         return $user->update($userData);
+    }
+
+    //TODO: Сделать анотацию для свагера
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $token = Str::random(64);
+        $data = $request->only('email', 'password', 'password_confirmation');
+        $data['token'] = $token;
+
+        DB::table('password_resets')->insert([
+            'email' => $data['email'],
+            'token' => bcrypt($data['token']),
+        ]);
+
+        $status = Password::reset(
+            $data,
+            static function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+                $user->notify((new ResetPassword($password)));
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        $code = $status === Password::PASSWORD_RESET ? 200 : 100;
+
+        return response()->json(['text' => __($status), 'status' => $code]);
     }
 
     /**
