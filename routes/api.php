@@ -26,6 +26,11 @@ Route::group([
     Route::get('me', [AuthController::class, 'me']);
 });
 
+Route::prefix('send')->group(
+    static function () {
+        Route::get('/otp/{user_phone}', [AuthController::class, 'sendCode']);
+    });
+
 Route::prefix('user')->group(
     static function () {
         Route::get('/{user}', [UserController::class, 'show']);
@@ -34,7 +39,7 @@ Route::prefix('user')->group(
         Route::post('/profile/{user}', [UserProfileController::class, 'fillProfile'])
             ->middleware('auth')
             ->name('profile.update');
-        Route::post('/reset-password',[UserController::class,'resetPassword'])
+        Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
         Route::patch('/{user}', [UserController::class, 'update'])->middleware('auth');
