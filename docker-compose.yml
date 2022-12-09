@@ -66,7 +66,7 @@ services:
         volumes:
             - ./:/var/www
         ports:
-            - ${LARAVEL_WEBSOCKETS_PORT}:6001
+            - '6001:6001'
         networks:
             - diploma
 
