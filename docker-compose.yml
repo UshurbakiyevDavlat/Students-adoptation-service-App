@@ -6,7 +6,7 @@ services:
             - ./:/var/www/
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-            - "8000:80"
+            - "8080:80"
         restart: unless-stopped
         depends_on:
             - app
