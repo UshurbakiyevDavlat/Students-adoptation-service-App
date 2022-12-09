@@ -15,6 +15,8 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: nginx_docker_diploma
+        networks:
+            - diploma
 
     app: # docker-compose exec app php artisan ..
         build:
@@ -30,6 +32,9 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: app_docker_diploma
+        image: diploma
+        networks:
+            - diploma
 
 
     db: # docker-compose exec db bash =>  mysql -u root -p => show databases;
@@ -48,3 +53,22 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: db_docker_diploma
+        networks:
+            - diploma
+
+    myapp-websockets:
+        image: diploma
+        command: [ 'php', 'artisan', 'websockets:serve' ]
+        container_name: websockets_docker_diploma
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        ports:
+            - ${LARAVEL_WEBSOCKETS_PORT}:6001
+        networks:
+            - diploma
+
+networks:
+    diploma:
+        driver: bridge
