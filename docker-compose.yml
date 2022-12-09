@@ -1,12 +1,15 @@
 version: '3'
 services:
     nginx:
-        image: nginx:latest
+        image: nginx:alpine
         volumes:
             - ./:/var/www/
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-            - "8080:80"
+            - "80:80"
+            - "443:443"
+        restart: unless-stopped
+        tty: true
         depends_on:
             - app
         logging:
@@ -56,7 +59,7 @@ services:
         networks:
             - diploma
 
-    myapp-websockets:
+    websockets:
         image: diploma
         command: [ 'php', 'artisan', 'websockets:serve' ]
         container_name: websockets_docker_diploma
