@@ -64,7 +64,7 @@ services:
         command: [ 'php', 'artisan', 'websockets:serve' ]
         container_name: websockets_docker_diploma
         restart: unless-stopped
-        working_dir: /var/www/diploma-students-service-backend/
+        working_dir: /var/www
         volumes:
             - ./:/var/www
         ports:
