@@ -6,7 +6,7 @@ services:
             - ./:/var/www/
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-            - "80:80"
+            - "8000:80"
             - "443:443"
         restart: unless-stopped
         tty: true
