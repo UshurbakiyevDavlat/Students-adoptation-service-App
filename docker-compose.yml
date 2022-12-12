@@ -1,12 +1,13 @@
 version: '3'
 services:
     nginx:
-        image: nginx:latest
+        image: nginx:alpine
         volumes:
             - ./:/var/www/
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
-            - "8080:80"
+            - "80:80"
+        restart: unless-stopped
         depends_on:
             - app
         logging:
@@ -15,6 +16,8 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: nginx_docker_diploma
+        networks:
+            - diploma
 
     app: # docker-compose exec app php artisan ..
         build:
@@ -30,6 +33,9 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: app_docker_diploma
+        image: diploma
+        networks:
+            - diploma
 
 
     db: # docker-compose exec db bash =>  mysql -u root -p => show databases;
@@ -48,3 +54,22 @@ services:
                 max-size: '10m'
                 max-file: '10'
         container_name: db_docker_diploma
+        networks:
+            - diploma
+
+    websockets:
+        image: diploma
+        command: [ 'php', 'artisan', 'websockets:serve' ]
+        container_name: websockets_docker_diploma
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        ports:
+            - '6001:6001'
+        networks:
+            - diploma
+
+networks:
+    diploma:
+        driver: bridge

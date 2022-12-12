@@ -34,5 +34,7 @@ COPY --chown=www:www . /var/www
 RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
 
+EXPOSE 6001
+
 #COPY var/www//supervisor/supervisord.conf /etc/supervisor/conf.d/job_worker.conf
 #CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/conf.d/job_worker.conf"]
