@@ -8,6 +8,7 @@
         "php": "^7.3|^8.0",
         "beyondcode/laravel-websockets": "^1.13",
         "darkaonline/l5-swagger": "*",
+        "elasticsearch/elasticsearch": "^8.5",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "joedixon/laravel-translation": "^2.1",
