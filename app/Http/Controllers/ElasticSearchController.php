@@ -3,23 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 use Illuminate\Http\JsonResponse;
+use JetBrains\PhpStorm\NoReturn;
 
 class ElasticSearchController extends Controller
 {
-    public $client;
-    public const ELASTIC_HOST = '127.0.0.1:9200';
+    public Client $client;
+    public const ELASTIC_HOST = 'elasticsearch_docker_diploma:9200';
 
     /**
      * @throws AuthenticationException
+     * @throws ClientResponseException
+     * @throws ServerResponseException
      */
-    public function __construct()
+    #[NoReturn] public function __construct()
     {
         $this->client = ClientBuilder::create()->setHosts([self::ELASTIC_HOST])->build();
+        dd($this->client->info());
     }
 
     //TODO Когда проверишь работоспособность, приведи в человеческий вид.
@@ -30,7 +35,6 @@ class ElasticSearchController extends Controller
      */
     public function import(): JsonResponse
     {
-        dd($this->client->info());
         $arData = User::all();
         $index = 0;
         $status = 0;
@@ -69,7 +73,7 @@ class ElasticSearchController extends Controller
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search($query)
+    public function search($query): array
     {
         $params = [
             'index' => 'users', // по какому индексу ищем
@@ -107,6 +111,6 @@ class ElasticSearchController extends Controller
             ]
         ];
 
-        return $this->client->search($params);
+        return $this->client->search($params)->asArray();
     }
 }
