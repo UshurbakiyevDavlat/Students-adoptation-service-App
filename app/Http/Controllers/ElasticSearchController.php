@@ -18,13 +18,10 @@ class ElasticSearchController extends Controller
 
     /**
      * @throws AuthenticationException
-     * @throws ClientResponseException
-     * @throws ServerResponseException
      */
     #[NoReturn] public function __construct()
     {
         $this->client = ClientBuilder::create()->setHosts([self::ELASTIC_HOST])->build();
-        dd($this->client->info());
     }
 
     //TODO Когда проверишь работоспособность, приведи в человеческий вид.
