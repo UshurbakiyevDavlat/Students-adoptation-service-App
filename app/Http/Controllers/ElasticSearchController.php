@@ -8,6 +8,8 @@ use Elastic\Elasticsearch\ClientBuilder;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
+use Elastic\Elasticsearch\Response\Elasticsearch;
+use Http\Promise\Promise;
 use Illuminate\Http\JsonResponse;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -33,6 +35,7 @@ class ElasticSearchController extends Controller
     public function import(): JsonResponse
     {
         $arData = User::all();
+        $arDataCount = User::all()->count();
         $index = 0;
         $status = 0;
         $params = ['body' => []];
@@ -54,7 +57,7 @@ class ElasticSearchController extends Controller
                 'birth_date' => $ar->birth_date,
             ];
 
-            if ($index === 10) {
+            if ($index === $arDataCount) {
                 $index = 0;
                 $status = 1;
                 $responses = $this->client->bulk($params);
@@ -63,14 +66,14 @@ class ElasticSearchController extends Controller
             }
         }
 
-        return $status ? response()->json(['status' => 'imported!']) : response()->json(['status' => 'Not imported!']);
+        return $status ? response()->json(['status' => 'imported!','data' => $params]) : response()->json(['status' => 'Not imported!']);
     }
 
     /**
      * @throws ServerResponseException
      * @throws ClientResponseException
      */
-    public function search($query): array
+    public function search($query): Elasticsearch|Promise
     {
         $params = [
             'index' => 'users', // по какому индексу ищем
@@ -108,6 +111,8 @@ class ElasticSearchController extends Controller
             ]
         ];
 
-        return $this->client->search($params)->asArray();
+        return $this->client->search($params);
     }
+
+    //TODO реализовать методы обновления и удаления индексов.
 }
