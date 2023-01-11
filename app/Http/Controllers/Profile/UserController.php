@@ -94,7 +94,7 @@ class UserController extends Controller
         return User::create($userData);
     }
 
-    //TODO: Сделать анотацию для свагера
+
     public function update(UserUpdateRequest $userUpdateRequest, User $user): bool
     {
         $userData = $userUpdateRequest->validated();
@@ -102,7 +102,7 @@ class UserController extends Controller
         return $user->update($userData);
     }
 
-    //TODO: Сделать анотацию для свагера
+
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $token = Str::random(64);
@@ -142,26 +142,6 @@ class UserController extends Controller
 
         return response()->json(['text' => __($status), 'status' => $code]);
     }
-
-    /**
-     * @OA\Delete(
-     *     path="/api/user/{id}",
-     *     summary="Delete user",
-     *     security={{"bearer_token":{}}},
-     *      @OA\Parameter(
-     *         description="Parameter user id",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string"),
-     *         @OA\Examples(example="int", value="1", summary="An int value."),
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="OK"
-     *     )
-     * )
-     */
 
     public function delete(User $user): ?bool
     {
