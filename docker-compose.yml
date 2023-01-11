@@ -73,7 +73,7 @@ services:
     #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name elasticsearch_docker_diploma elasticsearch:2.4.1 -Des.cluster.name="elasticsearch_docker_diploma"
     elasticsearch:
         container_name: elasticsearch_docker_diploma
-        image: library/elasticsearch:7.6 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
+        image: library/elasticsearch:7.17.8  #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
         environment:
             - Des.cluster.name=diplomas-data-cluster
             - xpack.security.enabled=false
