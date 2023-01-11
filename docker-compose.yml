@@ -70,13 +70,15 @@ services:
         networks:
             - diploma
 
-#docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name my_elastic_search elasticsearch:2.4.1 -Des.cluster.name="elastic_search_name"
+    #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name my_elastic_search elasticsearch:2.4.1 -Des.cluster.name="elastic_search_name"
     elasticsearch:
         container_name: elasticsearch_docker_diploma
         image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
-        #environment:
-#            - xpack.security.enabled=false
-#            - "discovery.type=single-node"
+        environment:
+            - xpack.security.enabled=false
+            - "discovery.type=single-node"
+        volumes:
+            - diplomas-data:/usr/share/elasticsearch/data
         ports:
             - '9200:9200'
         networks:
@@ -85,3 +87,7 @@ services:
 networks:
     diploma:
         driver: bridge
+
+volumes:
+    diplomas-data:
+        driver: local
