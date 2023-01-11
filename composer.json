@@ -6,12 +6,15 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "beyondcode/laravel-websockets": "^1.13",
         "darkaonline/l5-swagger": "*",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "joedixon/laravel-translation": "^2.1",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "mobizon/mobizon-php": "^2.0",
         "spatie/laravel-permission": "^5.5",
         "tymon/jwt-auth": "^1.0"
     },

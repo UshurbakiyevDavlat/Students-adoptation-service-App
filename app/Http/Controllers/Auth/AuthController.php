@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\UserLoginRequest;
+use App\Models\User;
+use App\Models\UserEntryCode;
+use App\Services\OtpService;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
@@ -13,17 +18,32 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    public function sendCode($user_phone): JsonResponse
+    {
+        return (new OtpService())->sendOtp($user_phone);
     }
 
     /**
      * Get a JWT via given credentials.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @param UserLoginRequest $request
+     * @return JsonResponse
      */
-    public function login()
+    //TODO подумать как оптимизировать подобные методы, где стоит более 2 ретурнов
+    public function login(UserLoginRequest $request): JsonResponse
     {
-        $credentials = request(['phone', 'password']);
+        $credentials = $request->only(['phone', 'password']);
+
+        //TODO Вот такие конструкции нужно выносить в отдельный сервис или метод,
+        // лучше сервис, позже надо найти вынести и заменить.
+        $entryCode = UserEntryCode::where('code', $request->code)->first();
+        $user = User::where('phone', $credentials['phone'])->first();
+
+        if ($entryCode && ($user->id !== $entryCode->user->id)) {
+            return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
+        }
 
         if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -35,9 +55,9 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function me()
+    public function me(): JsonResponse
     {
         return response()->json(auth()->user());
     }
@@ -45,9 +65,9 @@ class AuthController extends Controller
     /**
      * Log the user out (Invalidate the token).
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout()
+    public function logout(): JsonResponse
     {
         auth()->logout();
 
@@ -57,9 +77,9 @@ class AuthController extends Controller
     /**
      * Refresh a token.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function refresh()
+    public function refresh(): JsonResponse
     {
         return $this->respondWithToken(auth()->refresh());
     }
@@ -69,9 +89,9 @@ class AuthController extends Controller
      *
      * @param string $token
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken(string $token): JsonResponse
     {
         return response()->json([
             'access_token' => $token,

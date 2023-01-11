@@ -3,12 +3,20 @@
 namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Profile\UserCreateRequest;
 use App\Http\Requests\Profile\UserUpdateRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
+use App\Models\UserEntryCode;
+use App\Notifications\ResetPassword;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
 class UserController extends Controller
@@ -28,6 +36,7 @@ class UserController extends Controller
     {
         return UserCollection::make(User::all());
     }
+
     /**
      * @OA\Get(
      *     path="/api/user/{id}",
@@ -78,18 +87,60 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function create(UserCreateRequest $userCreateRequest)
+    public function create(UserCreateRequest $request)
     {
-        $userData = $userCreateRequest->validated();
+        $userData = $request->validated();
         $userData['password'] = Hash::make($userData['password']);
         return User::create($userData);
     }
 
+    //TODO: Сделать анотацию для свагера
     public function update(UserUpdateRequest $userUpdateRequest, User $user): bool
     {
         $userData = $userUpdateRequest->validated();
 
         return $user->update($userData);
+    }
+
+    //TODO: Сделать анотацию для свагера
+    public function resetPassword(ResetPasswordRequest $request): JsonResponse
+    {
+        $token = Str::random(64);
+        $data = $request->only('email', 'password', 'password_confirmation');
+
+        //TODO Вот такие конструкции нужно выносить в отдельный сервис или метод,
+        // лучше сервис, позже надо найти вынести и заменить.
+        $entryCode = UserEntryCode::where('code', $request->code)->first();
+        $user = User::where('email', $data['email'])->first();
+
+        if ($entryCode && ($user->id !== $entryCode->user->id)) {
+            return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
+        }
+
+        $data['token'] = $token;
+
+        DB::table('password_resets')->insert([
+            'email' => $data['email'],
+            'token' => bcrypt($data['token']),
+        ]);
+
+        $status = Password::reset(
+            $data,
+            static function ($user, $password) {
+                $user->forceFill([
+                    'password' => Hash::make($password)
+                ])->setRememberToken(Str::random(60));
+
+                $user->save();
+                $user->notify((new ResetPassword($password)));
+
+                event(new PasswordReset($user));
+            }
+        );
+
+        $code = $status === Password::PASSWORD_RESET ? 200 : 100;
+
+        return response()->json(['text' => __($status), 'status' => $code]);
     }
 
     /**

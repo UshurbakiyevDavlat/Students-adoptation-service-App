@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Profile;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserCreateRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +21,11 @@ class UserCreateRequest extends FormRequest
      *
      * @return array
      */
+    //TODO подумать как сделать валидацию на expires at у code
     public function rules(): array
     {
         return [
-            'phone' => 'required|string',
+            'phone' => 'required|exists:users,phone',
             'password' => 'required|string',
             'code' => 'required|exists:user_entries_code,code',
         ];
