@@ -87,11 +87,34 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function create(UserCreateRequest $request)
+    public function create(UserCreateRequest $request): JsonResponse|UserResource
     {
         $userData = $request->validated();
         $userData['password'] = Hash::make($userData['password']);
-        return User::create($userData);
+        $entryCode = UserEntryCode::where('code', $userData['code'])
+            ->where('used', 0)
+            ->first();
+
+        $errors = null;
+
+        if (!$entryCode) {
+            return response()
+                ->json(['status' => 403, 'message' => 'This code does not exist or has been used.'], 403);
+        }
+
+        try {
+            DB::beginTransaction();
+            $user = User::create($userData);
+            $entryCode->used = 1;
+            $entryCode->save();
+            DB::commit();
+
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            $errors = response()->json(['error' => $exception->getMessage()]);
+        }
+
+        return $errors ?: UserResource::make($user);
     }
 
 

@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserLoginRequest;
-use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Services\OtpService;
 use Illuminate\Http\JsonResponse;
@@ -38,16 +37,23 @@ class AuthController extends Controller
 
         //TODO Вот такие конструкции нужно выносить в отдельный сервис или метод,
         // лучше сервис, позже надо найти вынести и заменить.
-        $entryCode = UserEntryCode::where('code', $request->code)->first();
-        $user = User::where('phone', $credentials['phone'])->first();
+        $entryCode = UserEntryCode::where('code', $request->code)
+            ->where('phone', $credentials['phone'])
+            ->where('used', 0)
+            ->first();
 
-        if ($entryCode && ($user->id !== $entryCode->user->id)) {
-            return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
+        if (!$entryCode || !$token = auth()->attempt($credentials)) {
+            if (!$entryCode) {
+                $response = response()
+                    ->json(['status' => 403, 'message' => 'This user has no such code. Or code was already used'], 403);
+            } else {
+                $response = response()->json(['error' => 'Unauthorized'], 401);
+            }
+            return $response;
         }
 
-        if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
+        $entryCode->used = 1;
+        $entryCode->save();
 
         return $this->respondWithToken($token);
     }

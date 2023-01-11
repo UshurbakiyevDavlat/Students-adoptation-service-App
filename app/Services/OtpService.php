@@ -20,16 +20,9 @@ class OtpService implements OtpInterface
     //TODO подумать как оптимизировать подобные методы, где стоит более 2 ретурнов
     public function sendOtp($user_phone): JsonResponse
     {
-        $user = User::select(['id'])->where('phone', $user_phone)->first();
-        if (!$user) {
-            return response()->json(['message' => 'User with this phone is not existing', 'status' => 100]);
-        }
+        $this->createCode($user_phone);
 
-        $userId = $user->id;
-
-        $this->createCode($userId);
-
-        $user->notify(new SendOtpCode($this->text));
+        //TODO нужна интеграция с отправкой по ватсапу
 
         //TODO чтобы работало, нужны деньги на счет,
         // так же разобраться, если вернуло это сообщение то, нужно понять почему не отдает как ошибку.
@@ -42,11 +35,11 @@ class OtpService implements OtpInterface
         return response()->json(['status' => 200, 'message' => 'Успешно отправлено']);
     }
 
-    private function createCode($userId): void
+    private function createCode($phone): void
     {
         $code = UserEntryCode::create([
             'code' => Str::random('6'),
-            'user_id' => $userId
+            'phone' => $phone
         ])->code;
 
         $this->text = 'Ваш otp код:' . $code;

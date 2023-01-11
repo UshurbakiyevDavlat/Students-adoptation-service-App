@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Profile;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserFillProfileRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UserFillProfileRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -21,7 +23,7 @@ class UserFillProfileRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => 'string',
@@ -32,5 +34,11 @@ class UserFillProfileRequest extends FormRequest
             'speciality_id' => 'int|exists:specialities,id',
             'hobbies_ids' => 'array',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        //write your business logic here otherwise it will give same old JSON response
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

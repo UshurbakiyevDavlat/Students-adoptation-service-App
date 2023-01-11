@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Profile;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -28,5 +30,11 @@ class UserUpdateRequest extends FormRequest
             'email' => 'string',
             'password' => 'string'
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        //write your business logic here otherwise it will give same old JSON response
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }

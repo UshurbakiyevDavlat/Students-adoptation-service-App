@@ -17,7 +17,8 @@ class CreateUserEntriesCodeTable extends Migration
         Schema::create('user_entries_code', static function (Blueprint $table) {
             $table->id();
             $table->string('code');
-            $table->foreignId('user_id')->constrained('users');
+            $table->string('phone');
+            $table->tinyInteger('used')->default(0);
             $table->timestamps();
             $table->timestamp('expires_at')->default(Carbon::now()->addHour());
         });

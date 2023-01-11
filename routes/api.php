@@ -45,15 +45,15 @@ Route::prefix('elastic')->group(
 
 Route::prefix('user')->group(
     static function () {
-        Route::get('/{user}', [UserController::class, 'show']);
-        Route::get('/', [UserController::class, 'index']);
-        Route::post('/', [UserController::class, 'create']);
+        Route::get('/{user}', [UserController::class, 'show'])->name('user.show');
+        Route::get('/', [UserController::class, 'index'])->name('user.index');
+        Route::post('/', [UserController::class, 'create'])->name('user.create');
         Route::post('/profile/{user}', [UserProfileController::class, 'fillProfile'])
             ->middleware('auth')
             ->name('profile.update');
         Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
-        Route::patch('/{user}', [UserController::class, 'update'])->middleware('auth');
-        Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin']);
+        Route::patch('/{user}', [UserController::class, 'update'])->middleware('auth')->name('user.update');
+        Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin'])->name('user.delete');
     });

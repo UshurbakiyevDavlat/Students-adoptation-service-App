@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ResetPasswordRequest extends FormRequest
 {
@@ -29,5 +31,11 @@ class ResetPasswordRequest extends FormRequest
             'password' => 'required|min:8|confirmed',
             'code' => 'required|exists:user_entries_code,code',
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        //write your business logic here otherwise it will give same old JSON response
+        throw new HttpResponseException(response()->json($validator->errors(), 422));
     }
 }
