@@ -75,8 +75,11 @@ services:
         container_name: elasticsearch_docker_diploma
         image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
         environment:
-            - xpack.security.enabled=false
-            - "discovery.type=single-node"
+            - node.name=diplomas-data-node
+            - discovery.type=single-node
+            - cluster.name=diplomas-data-es-data-cluster
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
         volumes:
             - diplomas-data:/usr/share/elasticsearch/data
         ports:
