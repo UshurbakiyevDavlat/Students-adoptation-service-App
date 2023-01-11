@@ -74,7 +74,7 @@ services:
     elasticsearch:
         container_name: elasticsearch_docker_diploma
         image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
-        environment:
+        #environment:
 #            - xpack.security.enabled=false
 #            - "discovery.type=single-node"
         ports:
