@@ -70,20 +70,17 @@ services:
         networks:
             - diploma
 
-    #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name my_elastic_search elasticsearch:2.4.1 -Des.cluster.name="elastic_search_name"
+    #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name elasticsearch_docker_diploma elasticsearch:2.4.1 -Des.cluster.name="elasticsearch_docker_diploma"
     elasticsearch:
         container_name: elasticsearch_docker_diploma
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.0.1 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
+        image: docker.elastic.co/elasticsearch/elasticsearch:2.4.1 #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
         environment:
-            - node.name=diplomas-data-node
-            - discovery.type=single-node
-            - cluster.name=diplomas-data-es-data-cluster
-            - bootstrap.memory_lock=true
-            - "ES_JAVA_OPTS=-Xms1024m -Xmx1024m"
+            - Des.cluster.name=diplomas-data-cluster
         volumes:
             - diplomas-data:/usr/share/elasticsearch/data
         ports:
             - '9200:9200'
+            - '9300:9200'
         networks:
             - diploma
 
