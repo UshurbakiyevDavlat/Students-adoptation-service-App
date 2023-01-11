@@ -12,11 +12,11 @@ use Mobizon\Mobizon_OpenSSL_Required;
 use Mobizon\Mobizon_Param_Required;
 use Mobizon\MobizonApi;
 
-class SmsService implements SmsInterface
+class MobizonService implements SmsInterface
 {
-    private $api;
-    private $recipient;
-    private $text;
+    private MobizonApi $api;
+    private string $recipient;
+    private string $text;
 
     /**
      * @throws Mobizon_Error
@@ -35,7 +35,7 @@ class SmsService implements SmsInterface
      * @throws Mobizon_Http_Error
      * @throws Mobizon_Param_Required
      */
-    public function sendSms()
+    public function sendSms(): void
     {
         $send = $this->api->call('message', 'sendSMSMessage', [
             'recipient' => $this->recipient,
@@ -44,8 +44,8 @@ class SmsService implements SmsInterface
 
         try {
             $this->checkStatus($send);
-        } catch (Mobizon_Http_Error|Mobizon_Param_Required $e) {
-            Log::error('Mobizon', ['message' => $e->getMessage()]);
+        } catch (Mobizon_Http_Error|Mobizon_Param_Required $exception) {
+            Log::error('Mobizon', ['message' => $exception->getMessage()]);
         }
     }
 
