@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ElasticSearchController;
-use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Profile\UserController;
 use App\Http\Controllers\Profile\UserProfileController;
+use App\Http\Controllers\Services\ElasticSearchController;
+use App\Http\Controllers\Services\LocaleController;
 use Illuminate\Support\Facades\Route;
 
 /*
