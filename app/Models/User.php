@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -16,6 +17,7 @@ class User extends Authenticatable implements JWTSubject
     use HasFactory;
     use HasRoles;
     use Notifiable;
+    use ModelFilterTrait;
 
     protected $with = ['hobbies'];
     /**
@@ -60,7 +62,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
