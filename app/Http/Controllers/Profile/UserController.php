@@ -34,7 +34,7 @@ class UserController extends Controller
 
     public function index(): UserCollection
     {
-        return UserCollection::make(User::paginate());
+        return UserCollection::make((new User())->setFilters(['name','phone'])->getFiltered());
     }
 
     /**
