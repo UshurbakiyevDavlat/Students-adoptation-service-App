@@ -11,17 +11,19 @@ use Illuminate\Support\Str;
 class OtpService implements OtpInterface
 {
     private string $text;
+    private string $code;
 
     public function sendOtp($user_phone): JsonResponse
     {
         $this->createCode($user_phone);
 
-        try {
-            (new TwilioService())->sendMessage($this->text, '+' . $user_phone);
-        } catch (\Exception $exception) {
-            Log::error('Twilio', ['exception' => $exception->getTrace()]);
-            return response()->json(['error', $exception->getMessage()], 400);
-        }
+        // TODO пока закоментил, слишком дорого, для тестовой стадии будем отдавать код прям в респонсе.
+//        try {
+//            (new TwilioService())->sendMessage($this->text, '+' . $user_phone);
+//        } catch (\Exception $exception) {
+//            Log::error('Twilio', ['exception' => $exception->getTrace()]);
+//            return response()->json(['error', $exception->getMessage()], 400);
+//        }
 
         // TODO подключил мобизон, в качестве дополнительного сервиса смс рассылки.При использовании пополнить счет надо будет.
 //        try {
@@ -30,17 +32,17 @@ class OtpService implements OtpInterface
 //            return response()->json(['status' => 100, 'message' => 'see logs something went wrong in Mobizon integration'], 500);
 //        }
 
-        return response()->json(['status' => 200, 'message' => 'Успешно отправлено']);
+        return response()->json(['status' => 200, 'message' => 'Успешно отправлено', 'code' => $this->code]);
     }
 
     private function createCode($phone): void
     {
-        $code = UserEntryCode::create([
+        $this->code = UserEntryCode::create([
             'code' => Str::random('6'),
             'phone' => $phone
         ])->code;
 
-        $this->text = 'Ваш otp код:' . $code;
+        $this->text = 'Ваш otp код:' . $this->code;
     }
 
 }
