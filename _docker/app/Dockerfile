@@ -6,6 +6,10 @@ RUN apt-get update
 # Install PHP and composer dependencies
 RUN apt-get install -qq git curl libzip-dev libmcrypt-dev libjpeg-dev libpng-dev libfreetype6-dev libbz2-dev
 
+# Install xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
 
 # Clear out the local repository of retrieved package files
 RUN apt-get clean
@@ -35,6 +39,3 @@ RUN chgrp -R www-data storage bootstrap/cache
 RUN chmod -R ug+rwx storage bootstrap/cache
 
 EXPOSE 6001
-
-#COPY var/www//supervisor/supervisord.conf /etc/supervisor/conf.d/job_worker.conf
-#CMD ["/usr/bin/supervisord", "-n", "-c",  "/etc/supervisor/conf.d/job_worker.conf"]
