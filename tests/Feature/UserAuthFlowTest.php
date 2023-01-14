@@ -90,8 +90,7 @@ it('forbid login a user', function () {
     ];
 
     $login = post('/api/auth/login', $data);
-
-    $response = $login->assertStatus(403);
+    $login->assertStatus(403);
 });
 
 it('failed login a user', function () {
