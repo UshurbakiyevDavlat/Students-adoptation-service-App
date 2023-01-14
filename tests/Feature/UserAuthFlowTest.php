@@ -79,7 +79,41 @@ it('can login a user', function () {
     $response->assertJsonStructure(['access_token']);
 });
 
+it('forbid login a user', function () {
+    $user = User::find(test_register()->json()['data']['id']);
+    $otp = send_test_otp(123456);
+
+    $data = [
+        'phone' => $user->phone,
+        'password' => 'testingPassword',
+        'code' => $otp['data']['code'],
+    ];
+
+    $login = post('/api/auth/login', $data);
+
+    $response = $login->assertStatus(403);
+});
+
+it('failed login a user', function () {
+    $user = User::find(test_register()->json()['data']['id']);
+    $otp = send_test_otp();
+
+    $data = [
+        'phone' => $user->phone,
+        'password' => 'testingPassword1',
+        'code' => $otp['data']['code'],
+    ];
+
+    $login = post('/api/auth/login', $data);
+    $login->assertStatus(401);
+});
+
 it('can see a profile of user', fn() => get('/api/auth/me')->assertStatus(200));
+
+it('can refresh a token', function () {
+    $token = test_auth()->json()['access_token'];
+    get('/api/auth/refresh', ['Bearer ' . $token])->assertStatus(200);
+});
 
 it('can logout a user', function () {
     $token = test_auth()->json()['access_token'];
@@ -100,16 +134,19 @@ it('can update user profile', function () {
 });
 
 
-//it('can request password reset', function () {
-//    $user = User::factory(10)->create();
-//    dd($user);
-//    $otp = send_test_otp($user->phone);
-//    $data = [
-//        'email' => $user->email,
-//        'password' => $user->password,
-//        'password_confirmation' => $user->password,
-//        'code' => $otp['data']['code']
-//    ];
-//    $response = post('/api/user/reset-password', $data)->assertStatus(200);
-//    $response->assertJson(['text' => 'Your password has been reset!']);
-//});
+it('can request password reset', function () {
+    $user = User::find(test_register()->json()['data']['id']);
+    $user->email = 'dushurbakiev@gmail.com';
+    $user->save();
+
+    $otp = send_test_otp($user['phone']);
+    $data = [
+        'email' => $user->email,
+        'password' => 'password',
+        'password_confirmation' => 'password',
+        'code' => $otp['data']['code']
+    ];
+
+    $response = post('/api/user/reset-password', $data)->assertStatus(200);
+    $response->assertJson(['text' => 'Your password has been reset!']);
+});
