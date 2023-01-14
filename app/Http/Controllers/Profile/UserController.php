@@ -11,6 +11,7 @@ use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
+use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,7 @@ class UserController extends Controller
 
     public function index(): UserCollection
     {
-        return UserCollection::make((new User())->setFilters(['name','phone'])->getFiltered());
+        return UserCollection::make((new User())->setFilters(['name', 'phone'])->getFiltered());
     }
 
     /**
@@ -109,7 +110,7 @@ class UserController extends Controller
             $entryCode->save();
             DB::commit();
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             DB::rollBack();
             $errors = response()->json(['error' => $exception->getMessage()]);
         }
@@ -135,6 +136,10 @@ class UserController extends Controller
         // лучше сервис, позже надо найти вынести и заменить.
         $entryCode = UserEntryCode::where('code', $request->code)->first();
         $user = User::where('email', $data['email'])->first();
+
+        if (!$user) {
+            return response()->json(['status' => 400, 'message' => 'There is no such user']);
+        }
 
         if ($entryCode && ($user->id !== $entryCode->user->id)) {
             return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);

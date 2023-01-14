@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         City::factory(10)->create();
         Hobby::factory(10)->create();
@@ -45,7 +45,6 @@ class DatabaseSeeder extends Seeder
 
         $user->givePermissionTo($edit_account);
         $guest->givePermissionTo($show_all);
-
 
     }
 }

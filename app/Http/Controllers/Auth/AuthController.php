@@ -43,11 +43,11 @@ class AuthController extends Controller
             ->first();
 
         if (!$entryCode || !$token = auth()->attempt($credentials)) {
-            if (!$entryCode) {
-                $response = response()
-                    ->json(['status' => 403, 'message' => 'This user has no such code. Or code was already used'], 403);
-            } else {
+            if ($entryCode) {
                 $response = response()->json(['error' => 'Unauthorized'], 401);
+            } else {
+                $response = response()
+                    ->json(['status' => 403, 'message' => 'This user has not such code. Or code was already used'], 403);
             }
             return $response;
         }
