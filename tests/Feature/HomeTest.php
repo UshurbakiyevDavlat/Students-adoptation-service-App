@@ -1,7 +1,7 @@
 <?php
 
-it('has home', function () {
-    $this->assertTrue(true);
+use function Pest\Laravel\get;
 
-    expect(true)->toBeTrue();
+it('has home', function () {
+    get('/')->assertStatus(200);
 });
