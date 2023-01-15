@@ -11,7 +11,7 @@ class LocaleController extends Controller
     public function setLocale($locale): JsonResponse
     {
         if (!in_array($locale, ['ru', 'en', 'kz'])) {
-            return response()->json(['message' => 'Unset ' . App::getLocale() . ' locale', 'status' => 100, 'reason' => 'Illegal locale within app']);
+            return response()->json(['message' => 'Unset ' . App::getLocale() . ' locale', 'status' => 400, 'reason' => 'Illegal locale within app'],400);
         }
         App::setLocale($locale);
         return response()->json(['message' => 'successfully set ' . App::getLocale() . ' locale', 'status' => 200]);
