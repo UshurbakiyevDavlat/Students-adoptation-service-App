@@ -38,8 +38,8 @@ Route::prefix('send')->group(
 
 Route::prefix('elastic')->group(
     static function () {
-        Route::get('/import',[ElasticSearchController::class, 'import']);
-        Route::get('/search/{query}',[ElasticSearchController::class, 'search']);
+        Route::get('/import', [ElasticSearchController::class, 'import']);
+        Route::get('/search/{query}', [ElasticSearchController::class, 'search']);
     }
 );
 
@@ -54,6 +54,5 @@ Route::prefix('user')->group(
         Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
-        Route::patch('/{user}', [UserController::class, 'update'])->middleware('auth')->name('user.update');
         Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin'])->name('user.delete');
     });

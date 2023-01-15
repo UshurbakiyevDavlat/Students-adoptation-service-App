@@ -48,17 +48,4 @@ class ResetPassword extends Notification implements ShouldQueue
             ->line("New password is: {$this->password}")
             ->line('Good luck!');
     }
-
-    /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     * @return array
-     */
-    public function toArray($notifiable): array
-    {
-        return [
-            //
-        ];
-    }
 }
