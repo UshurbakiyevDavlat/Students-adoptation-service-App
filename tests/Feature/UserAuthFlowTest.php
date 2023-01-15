@@ -7,7 +7,8 @@ use Illuminate\Testing\TestResponse;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
-uses(RefreshDatabase::class)->afterEach(fn() => Artisan::call('db:seed'));
+uses(RefreshDatabase::class);
+beforeEach(fn() => Artisan::call('db:seed'));
 
 
 function send_test_otp($phone = '123456789'): array
@@ -125,13 +126,17 @@ it('can update user profile', function () {
     $data = [
         'email' => 'test@email.com',
         'name' => 'testName',
+        'birth_date' => '2000-03-19',
+        'city_id' => 1,
+        'university_id' => 1,
+        'speciality_id' => 1,
+        'hobbies_ids' => [1, 2, 3]
     ];
 
     $token = test_auth()->json()['access_token'];
 
     post('/api/user/profile/1', $data, ['Authorization' => 'Bearer ' . $token])->assertStatus(200);
 });
-
 
 it('can request password reset', function () {
     $user = User::find(test_register()->json()['data']['id']);

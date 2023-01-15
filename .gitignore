@@ -16,3 +16,4 @@ yarn-error.log
 /tmp
 xdebug.log
 /storage/testing_database.sqlite-journal
+/storage/testing_database.sqlite
