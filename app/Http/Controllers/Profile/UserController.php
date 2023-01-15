@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Profile\UserCreateRequest;
-use App\Http\Requests\Profile\UserUpdateRequest;
 use App\Http\Resources\Profile\User as UserResource;
 use App\Http\Resources\Profile\UserCollection;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
-use Exception;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -103,29 +101,13 @@ class UserController extends Controller
                 ->json(['status' => 403, 'message' => 'This code does not exist or has been used.'], 403);
         }
 
-        try {
-            DB::beginTransaction();
-            $user = User::create($userData);
-            $entryCode->used = 1;
-            $entryCode->save();
-            DB::commit();
-
-        } catch (Exception $exception) {
-            DB::rollBack();
-            $errors = response()->json(['error' => $exception->getMessage()]);
-        }
+        $user = User::create($userData);
+        $entryCode->used = 1;
+        $entryCode->save();
+        DB::commit();
 
         return $errors ?: UserResource::make($user);
     }
-
-
-    public function update(UserUpdateRequest $userUpdateRequest, User $user): bool
-    {
-        $userData = $userUpdateRequest->validated();
-
-        return $user->update($userData);
-    }
-
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
@@ -136,10 +118,6 @@ class UserController extends Controller
         // лучше сервис, позже надо найти вынести и заменить.
         $entryCode = UserEntryCode::where('code', $request->code)->first();
         $user = User::where('email', $data['email'])->first();
-
-        if (!$user) {
-            return response()->json(['status' => 400, 'message' => 'There is no such user']);
-        }
 
         if ($entryCode && ($user->id !== $entryCode->user->id)) {
             return response()->json(['status' => 403, 'message' => 'This user has not such code'], 403);
