@@ -1,13 +1,22 @@
-## Unik service. Diploma of IITU project.
+# Unik service. Diploma of IITU project.
+# Based on laravel.
 
-Based on laravel.
+## Technologies:
+    - Laravel version 8.83.23
+    - Simple, Docker-based application
+    - Mysql 5.7 database
+    - Nginx latest
+    - Elasticsearch
+    - RestAPI. 
+    - phpUnit Tests.
+    - Websockets.
+    - Telescope
+    - Filters. 
+    - Pagination. 
+    - Swagger. 
+    - Docker-compose.
+    - Localization
 
-- [Laravel version 8.83.23]
-- [Simple, Docker-based application]
-- [Mysql 5.7 database]
-- [Nginx latest]
-
-Backend for mobile application. RestAPI. Unit Tests. Websockets. Filters. Pagination. Swagger. Docker-compose.
-
-Integrations:
-    - [Mobizon]
+## Integrations:
+    - Twillio
+    - Mobizon
