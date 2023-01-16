@@ -3,7 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Profile\UserController;
 use App\Http\Controllers\Profile\UserProfileController;
-use App\Http\Controllers\Services\ElasticSearchController;
+//use App\Http\Controllers\Services\ElasticSearchController;
 use App\Http\Controllers\Services\LocaleController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,12 +36,12 @@ Route::prefix('send')->group(
         Route::get('/otp/{user_phone}', [AuthController::class, 'sendCode']);
     });
 
-Route::prefix('elastic')->group(
-    static function () {
-        Route::get('/import', [ElasticSearchController::class, 'import']);
-        Route::get('/search/{query}', [ElasticSearchController::class, 'search']);
-    }
-);
+//Route::prefix('elastic')->group(
+//    static function () {
+//        Route::get('/import', [ElasticSearchController::class, 'import']);
+//        Route::get('/search/{query}', [ElasticSearchController::class, 'search']);
+//    }
+//);
 
 Route::prefix('user')->group(
     static function () {
