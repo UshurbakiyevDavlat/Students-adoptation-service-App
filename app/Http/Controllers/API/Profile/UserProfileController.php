@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Profile;
+namespace App\Http\Controllers\API\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UserFillProfileRequest;
