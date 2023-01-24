@@ -3,10 +3,8 @@
 use App\Http\Controllers\API\Profile\UserController;
 use App\Http\Controllers\API\Profile\UserProfileController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Services\LocaleController;
+use App\Http\Controllers\Localization\LocaleController;
 use Illuminate\Support\Facades\Route;
-
-//use App\Http\Controllers\Services\ElasticSearchController;
 
 /*
 |--------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Services;
+namespace App\Http\Controllers\Localization;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;

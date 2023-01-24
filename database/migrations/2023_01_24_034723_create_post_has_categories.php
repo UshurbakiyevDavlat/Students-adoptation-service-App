@@ -4,22 +4,20 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesOfPostsTable extends Migration
+class CreatePostHasCategories extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('categories_of_posts', static function (Blueprint $table) {
+        Schema::create('post_has_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('post_id')->constrained('posts');
             $table->foreignId('category_id')->constrained('post_categories');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,8 +26,8 @@ class CreateCategoriesOfPostsTable extends Migration
      *
      * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('categories_of_posts');
+        Schema::dropIfExists('post_has_categories');
     }
 }

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Profile\UserCreateRequest;
-use App\Http\Resources\Profile\User as UserResource;
-use App\Http\Resources\Profile\UserCollection;
+use App\Http\Resources\User\User as UserResource;
+use App\Http\Resources\User\UserCollection;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
@@ -152,5 +152,10 @@ class UserController extends Controller
     public function delete(User $user): ?bool
     {
         return $user->delete();
+    }
+
+    public function getComments()
+    {
+
     }
 }

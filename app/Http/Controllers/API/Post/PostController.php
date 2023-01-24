@@ -3,84 +3,65 @@
 namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Post\PostCollection;
+use App\Http\Resources\Post\Post as PostResource;
 use App\Models\Post;
-use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function getPosts(): PostCollection
     {
-        //
+        return PostCollection::make((new Post())->setFilters(['description', 'title'])->getFiltered());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getPost(Post $post): PostResource
     {
-        //
+        return PostResource::make($post);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getComments()
     {
-        //
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Post $post)
+    public function getCategories()
     {
-        //
+
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
+    public function getAmountOfComments()
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
+    public function likePost()
     {
-        //
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
+    public function getAmountOfLikes()
     {
-        //
+
+    }
+
+    public function getSavedPosts()
+    {
+
+    }
+
+    public function addPost()
+    {
+
+    }
+
+    public function editPost()
+    {
+
+    }
+
+    public function deletePost()
+    {
+
     }
 }
