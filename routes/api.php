@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\API\Profile\UserController;
-use App\Http\Controllers\API\Profile\UserProfileController;
-use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\User\UserController;
+use App\Http\Controllers\API\User\UserProfileController;
 use App\Http\Controllers\Localization\LocaleController;
 use Illuminate\Support\Facades\Route;
 

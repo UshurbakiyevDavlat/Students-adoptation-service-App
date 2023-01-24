@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API\Profile;
+namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
@@ -90,6 +90,8 @@ class UserController extends Controller
     {
         $userData = $request->validated();
         $userData['password'] = Hash::make($userData['password']);
+        $userData['uuid'] = Str::uuid();
+
         $entryCode = UserEntryCode::where('code', $userData['code'])
             ->where('used', 0)
             ->first();
