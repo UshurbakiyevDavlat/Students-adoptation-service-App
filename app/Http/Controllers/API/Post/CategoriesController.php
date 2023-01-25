@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\Category\CategoryCreateRequest;
+use App\Http\Requests\Post\Category\CategoryDeleteRequest;
+use App\Http\Requests\Post\Category\CategoryUpdateRequest;
 use App\Http\Resources\Post\Category\Category;
 use App\Http\Resources\Post\Category\CategoryCollection;
 use App\Models\PostCategory;
@@ -19,17 +22,17 @@ class CategoriesController extends Controller
         return CategoryCollection::make(PostCategory::all()->all());
     }
 
-    public function addCategories()
+    public function addCategories(CategoryCreateRequest $request)
     {
 
     }
 
-    public function editCategories()
+    public function editCategories(CategoryUpdateRequest $request)
     {
 
     }
 
-    public function deleteCategories()
+    public function deleteCategories(CategoryDeleteRequest $request)
     {
 
     }

@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\PostCreateRequest;
+use App\Http\Requests\Post\PostDeleteRequest;
+use App\Http\Requests\Post\PostUpdateRequest;
 use App\Http\Resources\Post\Post as PostResource;
 use App\Http\Resources\Post\PostCollection;
 use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -25,27 +29,27 @@ class PostController extends Controller
         return $post->likes()->where('liked', 1)->count();
     }
 
-    public function getSavedPosts()
+    public function getSavedPosts(User $user): PostCollection
+    {
+        return PostCollection::make($user->savedPosts()->paginate());
+    }
+
+    public function likePost(Post $post)
     {
 
     }
 
-    public function likePost()
+    public function addPost(PostCreateRequest $request)
     {
 
     }
 
-    public function addPost()
+    public function editPost(PostUpdateRequest $request)
     {
 
     }
 
-    public function editPost()
-    {
-
-    }
-
-    public function deletePost()
+    public function deletePost(PostDeleteRequest $request)
     {
 
     }

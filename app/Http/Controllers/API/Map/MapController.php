@@ -3,6 +3,12 @@
 namespace App\Http\Controllers\API\Map;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Map\UserMapLocationCreateRequest;
+use App\Http\Requests\Map\UserMapLocationDeleteRequest;
+use App\Http\Requests\Map\UserMapLocationUpdateRequest;
+use App\Http\Requests\Map\UserMapPlaceCreateRequest;
+use App\Http\Requests\Map\UserMapPlaceDeleteRequest;
+use App\Http\Requests\Map\UserMapPlaceUpdateRequest;
 use App\Http\Resources\Map\Map;
 use App\Http\Resources\Map\MapCollection;
 use App\Models\UserMap;
@@ -20,32 +26,32 @@ class MapController extends Controller
         return MapCollection::make(UserMapPlace::all()->paginate());
     }
 
-    public function createUserLocation()
+    public function createUserLocation(UserMapLocationCreateRequest $request)
     {
 
     }
 
-    public function createUserPlacePoint()
+    public function createUserPlacePoint(UserMapPlaceCreateRequest $request)
     {
 
     }
 
-    public function updateUserLocation()
+    public function updateUserLocation(UserMapLocationUpdateRequest $request)
     {
 
     }
 
-    public function updateUserPlacePoint()
+    public function updateUserPlacePoint(UserMapPlaceUpdateRequest $request)
     {
 
     }
 
-    public function deleteUserLocation()
+    public function deleteUserLocation(UserMapLocationDeleteRequest $request)
     {
 
     }
 
-    public function deleteUserPlacePoint()
+    public function deleteUserPlacePoint(UserMapPlaceDeleteRequest $request)
     {
 
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
-use App\Http\Requests\Profile\UserCreateRequest;
+use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Resources\User\User as UserResource;
 use App\Http\Resources\User\UserCollection;
 use App\Models\User;

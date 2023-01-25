@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Profile;
+namespace App\Http\Requests\Post\Category;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class UserCreateRequest extends FormRequest
+class CategoryDeleteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,13 +26,11 @@ class UserCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone' => 'required|string',
-            'password' => 'required|string',
-            'code' => 'required|exists:user_entries_code,code',
+            //
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator): void
     {
         //write your business logic here otherwise it will give same old JSON response
         throw new HttpResponseException(response()->json($validator->errors(), 422));

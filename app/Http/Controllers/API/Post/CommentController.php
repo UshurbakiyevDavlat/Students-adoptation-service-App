@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\Comment\CommentCreateRequest;
+use App\Http\Requests\Post\Comment\CommentDeleteRequest;
+use App\Http\Requests\Post\Comment\CommentUpdateRequest;
 use App\Http\Resources\Post\Comment\Comment as CommentResource;
 use App\Http\Resources\Post\Comment\CommentCollection;
 use App\Models\Comment;
@@ -26,17 +29,17 @@ class CommentController extends Controller
         return $post->comments()->where('status', 1)->count();
     }
 
-    public function createComment()
+    public function createComment(CommentCreateRequest $request)
     {
 
     }
 
-    public function editComment()
+    public function editComment(CommentUpdateRequest $request)
     {
 
     }
 
-    public function deleteComment()
+    public function deleteComment(CommentDeleteRequest $request)
     {
 
     }

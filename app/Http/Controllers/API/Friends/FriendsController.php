@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API\Friends;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Friend\FriendCreateRequest;
+use App\Http\Requests\Friend\FriendDeleteRequest;
 use App\Http\Resources\Friend\Friend;
 use App\Http\Resources\Friend\FriendCollection;
 use App\Http\Resources\Friend\Request\Friend as FriendRequest;
@@ -32,12 +34,12 @@ class FriendsController extends Controller
         return FriendCollection::make(UserFriend::all()->paginate());
     }
 
-    public function addFriend()
+    public function addFriend(FriendCreateRequest $request)
     {
 
     }
 
-    public function deleteFriend()
+    public function deleteFriend(FriendDeleteRequest $request)
     {
 
     }

@@ -35,13 +35,6 @@ Route::prefix('send')->group(
         Route::get('/otp/{user_phone}', [AuthController::class, 'sendCode']);
     });
 
-//Route::prefix('elastic')->group(
-//    static function () {
-//        Route::get('/import', [ElasticSearchController::class, 'import']);
-//        Route::get('/search/{query}', [ElasticSearchController::class, 'search']);
-//    }
-//);
-
 Route::prefix('user')->group(
     static function () {
         Route::get('/{user}', [UserController::class, 'show'])->name('user.show');
