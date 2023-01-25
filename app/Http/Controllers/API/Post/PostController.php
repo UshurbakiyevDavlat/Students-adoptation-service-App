@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Post\PostCollection;
 use App\Http\Resources\Post\Post as PostResource;
+use App\Http\Resources\Post\PostCollection;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -20,32 +20,17 @@ class PostController extends Controller
         return PostResource::make($post);
     }
 
-    public function getComments()
+    public function getAmountOfLikes(Post $post): int
     {
-
+        return $post->likes()->where('liked', 1)->count();
     }
 
-    public function getCategories()
-    {
-
-    }
-
-    public function getAmountOfComments()
+    public function getSavedPosts()
     {
 
     }
 
     public function likePost()
-    {
-
-    }
-
-    public function getAmountOfLikes()
-    {
-
-    }
-
-    public function getSavedPosts()
     {
 
     }

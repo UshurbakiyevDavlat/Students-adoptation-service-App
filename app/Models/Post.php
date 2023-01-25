@@ -30,5 +30,15 @@ class Post extends Model
         return $this->belongsToMany(PostCategory::class, 'post_has_categories', 'post_id', 'category_id');
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'post_id', 'id');
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'users_post', 'post_id', 'author_id');
+    }
+
 
 }
