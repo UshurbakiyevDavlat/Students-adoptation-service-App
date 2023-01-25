@@ -2,9 +2,12 @@
 
 namespace App\Http\Requests\Friend;
 
+use App\Enums\Friend\FriendStatus;
+use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
 class FriendDeleteRequest extends FormRequest
 {
@@ -26,7 +29,15 @@ class FriendDeleteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['int', 'exists:users,id',
+                Rule::unique('users_friends')->where(function ($query) {
+                    return $query->where([
+                        ['user_id', $this->user_id],
+                        ['friend_id', $this->friend_id],
+                    ])->whereNotNull('deleted_at');
+                })
+                ],
+            'friend_id' => 'int|exists:users,id'
         ];
     }
 

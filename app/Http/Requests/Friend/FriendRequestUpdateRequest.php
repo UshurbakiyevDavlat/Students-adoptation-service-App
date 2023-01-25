@@ -2,14 +2,14 @@
 
 namespace App\Http\Requests\Friend;
 
-use App\Enums\Friend\FriendStatus;
+use App\Enums\Friend\FriendRequestStatusEnum;
 use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class FriendCreateRequest extends FormRequest
+class FriendRequestUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,15 +29,15 @@ class FriendCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['int', 'exists:users,id',
-                Rule::unique('users_friends')->where(function ($query) {
+            'user_id' => ['required', 'int', 'exists:users,id',
+                Rule::unique('users_friends_requests')->where(function ($query) {
                     return $query->where([
                         ['user_id', $this->user_id],
                         ['friend_id', $this->friend_id],
-                    ]);
-                })
-            ],
-            'friend_id' => 'int|exists:users,id'
+                    ])->where('status', $this->status);
+                })],
+            'friend_id' => ['required', 'int', 'exists:users,id'],
+            'status' => ['required', 'int', new EnumValue(FriendRequestStatusEnum::class)]
         ];
     }
 

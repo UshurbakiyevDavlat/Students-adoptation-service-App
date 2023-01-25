@@ -10,7 +10,7 @@ class UserMapPlace extends Model
 {
     use HasFactory;
 
-    protected $table = ['users_maps_places'];
+    protected $table = 'users_maps_places';
 
     public function user(): BelongsTo
     {

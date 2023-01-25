@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\Friends\FriendsController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\UserProfileController;
 use App\Http\Controllers\Localization\LocaleController;
@@ -48,3 +49,18 @@ Route::prefix('user')->group(
             ->name('password.update');
         Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin'])->name('user.delete');
     });
+
+Route::prefix('friends')->group(
+    static function () {
+        Route::prefix('request')->group(
+            static function () {
+                Route::post('/create', [FriendsController::class, 'createFriendRequest'])->name('create_friends_request');
+                Route::patch('/update', [FriendsController::class, 'updateFriendRequest'])->name('update_friends_request');
+            }
+        );
+
+        Route::post('/create', [FriendsController::class, 'addFriend'])->name('add_friend');
+        Route::delete('/delete', [FriendsController::class, 'deleteFriend'])->name('delete_friend');
+
+    }
+);

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "bensampo/laravel-enum": "^4.2",
         "beyondcode/laravel-websockets": "^1.13",
         "darkaonline/l5-swagger": "*",
         "elasticsearch/elasticsearch": "^8.5",
