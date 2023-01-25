@@ -13,7 +13,6 @@ use App\Http\Resources\Friend\Friend;
 use App\Http\Resources\Friend\FriendCollection;
 use App\Http\Resources\Friend\Request\Friend as FriendRequest;
 use App\Http\Resources\Friend\Request\FriendCollection as FriendRequestCollection;
-use App\Models\User;
 use App\Models\UserFriend;
 use App\Models\UserFriendRequest;
 use Illuminate\Http\JsonResponse;
@@ -57,7 +56,7 @@ class FriendsController extends Controller
         $userFriendRequest = UserFriendRequest::where('user_id', $data['user_id'])
             ->where('friend_id', $data['friend_id'])
             ->where('status', FriendRequestStatusEnum::WAITING)
-            ->get();
+            ->first();
 
         $userFriendRequest->status = $data['status'];
         $userFriendRequest->save();
