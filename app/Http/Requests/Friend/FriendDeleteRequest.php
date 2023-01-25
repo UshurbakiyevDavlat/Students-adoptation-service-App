@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests\Friend;
 
-use App\Enums\Friend\FriendStatus;
-use BenSampo\Enum\Rules\EnumValue;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -36,7 +34,7 @@ class FriendDeleteRequest extends FormRequest
                         ['friend_id', $this->friend_id],
                     ])->whereNotNull('deleted_at');
                 })
-                ],
+            ],
             'friend_id' => 'int|exists:users,id'
         ];
     }
