@@ -50,17 +50,16 @@ Route::prefix('user')->group(
         Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin'])->name('user.delete');
     });
 
-Route::prefix('friends')->group(
-    static function () {
-        Route::prefix('request')->group(
-            static function () {
-                Route::post('/create', [FriendsController::class, 'createFriendRequest'])->name('create_friends_request');
-                Route::patch('/update', [FriendsController::class, 'updateFriendRequest'])->name('update_friends_request');
-            }
-        );
-
-        Route::post('/create', [FriendsController::class, 'addFriend'])->name('add_friend');
-        Route::delete('/delete', [FriendsController::class, 'deleteFriend'])->name('delete_friend');
-
-    }
-);
+Route::group(['prefix' => 'friends', 'middleware' => 'auth'], static function () {
+    Route::prefix('request')->group(
+        static function () {
+            Route::get('/self/list', [FriendsController::class, 'getMyFriendsRequestList'])->name('my.friend.request.list');
+            Route::get('{user}/list', [FriendsController::class, 'getFriendsRequestsList'])->name('friend.request.list');
+            Route::post('/create', [FriendsController::class, 'createFriendRequest'])->name('friend.create_friends_request');
+            Route::patch('/update', [FriendsController::class, 'updateFriendRequest'])->name('friend.update_friends_request');
+        }
+    );
+    Route::get('{user}/list', [FriendsController::class, 'getFriendsList'])->name('friend.get_friends_list');
+    Route::post('/create', [FriendsController::class, 'addFriend'])->name('friend.add_friend');
+    Route::delete('/delete', [FriendsController::class, 'deleteFriend'])->name('friend.delete_friend');
+});

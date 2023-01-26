@@ -30,6 +30,12 @@ class FriendRequestUpdateRequest extends FormRequest
     {
         return [
             'user_id' => ['required', 'int', 'exists:users,id',
+                Rule::exists('users_friends_requests')->where(function ($query) {
+                    return $query->where([
+                        ['user_id', $this->user_id],
+                        ['friend_id', $this->friend_id],
+                    ]);
+                }),
                 Rule::unique('users_friends_requests')->where(function ($query) {
                     return $query->where([
                         ['user_id', $this->user_id],

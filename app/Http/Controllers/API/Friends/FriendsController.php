@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Friends;
 
 use App\Enums\Friend\FriendStatus;
+use App\Helpers\Helpers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\FriendCreateRequest;
 use App\Http\Requests\Friend\FriendDeleteRequest;
@@ -12,6 +13,7 @@ use App\Http\Resources\Friend\Friend;
 use App\Http\Resources\Friend\FriendCollection;
 use App\Http\Resources\Friend\Request\Friend as FriendRequest;
 use App\Http\Resources\Friend\Request\FriendCollection as FriendRequestCollection;
+use App\Models\User;
 use App\Models\UserFriend;
 use App\Models\UserFriendRequest;
 use Illuminate\Http\JsonResponse;
@@ -28,14 +30,20 @@ class FriendsController extends Controller
         return Friend::make($friend);
     }
 
-    public function getFriendsRequests(): FriendRequestCollection
+    public function getFriendsRequestsList(User $user): FriendRequestCollection
     {
-        return FriendRequestCollection::make(UserFriendRequest::all()->paginate());
+        return FriendRequestCollection::make($user->friendsRequests()->paginate());
     }
 
-    public function getFriendsList(): FriendCollection
+    public function getMyFriendsRequestList(): FriendRequestCollection
     {
-        return FriendCollection::make(UserFriend::all()->paginate());
+        $user = auth()->user();
+        return FriendRequestCollection::make($user->userFriendRequests()->paginate());
+    }
+
+    public function getFriendsList(User $user): FriendCollection
+    {
+        return FriendCollection::make($user->friends()->paginate());
     }
 
     public function createFriendRequest(FriendRequestCreateRequest $request): JsonResponse
@@ -71,9 +79,13 @@ class FriendsController extends Controller
     {
         $data = $request->validated();
 
-        $newFriend = UserFriend::create($data);
+        $userSide = UserFriend::create($data);
 
-        return response()->json(['message' => __('friend_success_creation'), 'request' => $newFriend]);
+        (new Helpers())->swap($data['user_id'], $data['friend_id']);
+
+        $friendSide = UserFriend::create($data);
+
+        return response()->json(['message' => __('friend_success_creation'), 'userSide' => $userSide, 'friendSide' => $friendSide]);
 
     }
 
@@ -81,15 +93,24 @@ class FriendsController extends Controller
     {
         $data = $request->validated();
 
-        $friend = UserFriend::where('friend_id', $data['friend_id'])
+        //TODO Сделай плиз через релейшены, а то так не очень. Кода больше, и выглядит страшно, а производительность меньше.
+
+        $userSide = UserFriend::where('friend_id', $data['friend_id'])
             ->where('user_id', $data['user_id'])
             ->first();
 
+        $friendSide = UserFriend::where('friend_id', $data['user_id'])
+            ->where('user_id', $data['friend_id'])
+            ->first();
 
-        $friend->status = FriendStatus::DELETED;
-        $friend->save();
+        $userSide->status = FriendStatus::DELETED;
+        $friendSide->status = FriendStatus::DELETED;
 
-        $friend->delete();
+        $userSide->save();
+        $friendSide->save();
+
+        $userSide->delete();
+        $friendSide->delete();
 
         return response()->json(['message' => __('friend_success_deleted')]);
     }

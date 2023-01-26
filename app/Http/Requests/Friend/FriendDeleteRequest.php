@@ -28,6 +28,13 @@ class FriendDeleteRequest extends FormRequest
     {
         return [
             'user_id' => ['int', 'exists:users,id',
+                'exists:users_friends,user_id',
+                Rule::exists('users_friends')->where(function ($query) {
+                    return $query->where([
+                        ['user_id', $this->user_id],
+                        ['friend_id', $this->friend_id],
+                    ]);
+                }),
                 Rule::unique('users_friends')->where(function ($query) {
                     return $query->where([
                         ['user_id', $this->user_id],
