@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\API\Friends;
 
-use App\Enums\Friend\FriendRequestStatusEnum;
 use App\Enums\Friend\FriendStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\FriendCreateRequest;
@@ -55,11 +54,15 @@ class FriendsController extends Controller
         $data = $request->validated();
         $userFriendRequest = UserFriendRequest::where('user_id', $data['user_id'])
             ->where('friend_id', $data['friend_id'])
-            ->where('status', FriendRequestStatusEnum::WAITING)
+            ->whereNotNull('deleted_at')
             ->first();
 
         $userFriendRequest->status = $data['status'];
         $userFriendRequest->save();
+
+        if ($data['status'] === FriendStatus::DELETED) {
+            $userFriendRequest->delete();
+        }
 
         return response()->json(['message' => __('friend_request_success_update'), 'request' => $userFriendRequest]);
     }
