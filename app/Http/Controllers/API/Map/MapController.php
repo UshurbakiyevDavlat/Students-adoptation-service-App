@@ -4,55 +4,78 @@ namespace App\Http\Controllers\API\Map;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Map\UserMapLocationCreateRequest;
-use App\Http\Requests\Map\UserMapLocationDeleteRequest;
 use App\Http\Requests\Map\UserMapLocationUpdateRequest;
 use App\Http\Requests\Map\UserMapPlaceCreateRequest;
-use App\Http\Requests\Map\UserMapPlaceDeleteRequest;
 use App\Http\Requests\Map\UserMapPlaceUpdateRequest;
 use App\Http\Resources\Map\Map;
 use App\Http\Resources\Map\MapCollection;
-use App\Models\UserMap;
 use App\Models\UserMapPlace;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class MapController extends Controller
 {
-    public function getUserMapLocation(UserMap $userMap): Map
+    public function getUserMapLocation(): Map
     {
-        return Map::make($userMap);
+        $user = Auth::user();
+        return Map::make($user?->mapsLocation()->paginate());
     }
 
     public function getUserPlacePoints(): MapCollection
     {
-        return MapCollection::make(UserMapPlace::all()->paginate());
+        $user = Auth::user();
+        return MapCollection::make($user?->mapsPlaces()->paginate());
     }
 
-    public function createUserLocation(UserMapLocationCreateRequest $request)
+    public function createUserLocation(UserMapLocationCreateRequest $request): JsonResponse
     {
+        $user = Auth::user();
+        $data = $request->validated();
+        $user?->mapsLocation()->create($data);
 
+        return response()->json(['message' => __('map_location_success_creation'), 'location' => $user?->mapsLocation()->paginate()]);
     }
 
-    public function createUserPlacePoint(UserMapPlaceCreateRequest $request)
+    public function createUserPlacePoint(UserMapPlaceCreateRequest $request): JsonResponse
     {
+        $user = Auth::user();
+        $data = $request->validated();
+        $user?->mapsPlaces()->create($data);
 
+        return response()->json(['message' => __('map_place_success_creation'), 'location' => $user?->mapsPlaces()->paginate()]);
     }
 
     public function updateUserLocation(UserMapLocationUpdateRequest $request)
     {
+        $user = Auth::user();
+        $data = $request->validated();
+        $user?->mapsLocation()->update($data);
 
+        return response()->json(['message' => __('map_location_success_update'), 'location' => $user?->mapsLocation()->paginate()]);
     }
 
-    public function updateUserPlacePoint(UserMapPlaceUpdateRequest $request)
+    public function updateUserPlacePoint(UserMapPlace $point, UserMapPlaceUpdateRequest $request)
     {
+        $user = Auth::user();
+        $data = $request->validated();
+        $user?->mapsPlaces()->where('id', $point->id)->update($data);
 
+        return response()->json(['message' => __('map_place_success_update'), 'location' => $user?->mapsPlaces()->paginate()]);
     }
 
-    public function deleteUserLocation(UserMapLocationDeleteRequest $request)
+    public function deleteUserLocation(): JsonResponse
     {
+        $user = Auth::user();
+        $user?->mapsLocation()->delete();
 
+        return response()->json(['message' => __('map_location_success_delete')]);
     }
 
-    public function deleteUserPlacePoint(UserMapPlaceDeleteRequest $request)
+    public function deleteUserPlacePoint(UserMapPlace $point): JsonResponse
     {
+        $user = Auth::user();
+        $user?->mapsPlaces()->where('id', $point->id)->delete();
 
+        return response()->json(['message' => __('map_place_success_delete'), 'location' => $user?->mapsPlaces()->paginate()]);
     }
 }

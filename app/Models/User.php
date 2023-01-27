@@ -93,7 +93,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Post::class, 'users_saved_posts', 'user_id', 'post_id')->withTimestamps();
     }
 
-    public function mapsPoints(): HasMany
+    public function mapsLocation(): HasMany
     {
         return $this->hasMany(UserMap::class, 'user_id', 'id');
     }

@@ -26,7 +26,10 @@ class UserMapLocationCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+            'name' => 'required|string',
+            'address' => 'required|string',
         ];
     }
 
