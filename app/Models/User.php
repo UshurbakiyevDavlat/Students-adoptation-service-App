@@ -85,7 +85,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function posts(): BelongsToMany
     {
-        return $this->belongsToMany(Post::class, 'user_post', 'user_id', 'post_id')->withTimestamps();
+        return $this->belongsToMany(Post::class, 'users_post', 'author_id', 'post_id')->withTimestamps()->withPivot('liked');
     }
 
     public function savedPosts(): BelongsToMany

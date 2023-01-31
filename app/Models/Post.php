@@ -15,6 +15,13 @@ class Post extends Model
     use SoftDeletes;
     use ModelFilterTrait;
 
+    protected $guarded = ['id'];
+    protected $fillable = [
+        'title',
+        'description',
+        'body'
+    ];
+
     public function user(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'users_post', 'post_id', 'user_id');
@@ -23,6 +30,12 @@ class Post extends Model
     public function mediaFiles(): HasMany
     {
         return $this->hasMany(MediaFile::class, 'post_id', 'id');
+    }
+
+
+    public function savedPosts(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'users_saved_posts', 'post_id', 'user_id');
     }
 
     public function categories(): BelongsToMany

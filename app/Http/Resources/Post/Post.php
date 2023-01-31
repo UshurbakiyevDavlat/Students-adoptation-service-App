@@ -16,9 +16,8 @@ class Post extends JsonResource
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
         $post = parent::toArray($request);
-
-        $post['amountOfLikes'] = $request->likes()->where('liked', 1)->count();
-        $post['amountOfComments'] = $request->comments()->where('status', 1)->count();
+        $post['amountOfLikes'] = parent::likes()->where('liked', 1)->count();
+        $post['amountOfComments'] = parent::comments()->where('status', 1)->count();
 
         return $post;
     }

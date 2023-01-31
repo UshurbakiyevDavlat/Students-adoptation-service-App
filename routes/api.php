@@ -113,7 +113,8 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
     Route::get('/list', [PostController::class, 'getPosts'])->name('posts.list');
     Route::get('/saved', [PostController::class, 'getSavedPosts'])->name('posts.list.saved');
     Route::post('/create', [PostController::class, 'addPost'])->name('post.create');
-    Route::put('/edit', [PostController::class, 'editPost'])->name('post.update');
-    Route::put('/like', [PostController::class, 'likePost'])->name('post.like');
-    Route::delete('/delete', [PostController::class, 'deletePost'])->name('post.delete');
+    Route::put('/save/{post}', [PostController::class, 'savePost'])->name('posts.save');
+    Route::put('/edit/{post}', [PostController::class, 'editPost'])->name('post.update');
+    Route::patch('/like/{post}', [PostController::class, 'likePost'])->name('post.like');
+    Route::delete('/delete/{post}', [PostController::class, 'deletePost'])->name('post.delete');
 });
