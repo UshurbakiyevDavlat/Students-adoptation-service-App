@@ -14,6 +14,10 @@ class Post extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $post = parent::toArray($request);
+
+        $post['amountOfLikes'] = $request->likes()->where('liked', 1)->count();
+
+        return $post;
     }
 }

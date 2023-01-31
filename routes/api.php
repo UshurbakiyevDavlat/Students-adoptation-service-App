@@ -3,6 +3,9 @@
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Friends\FriendsController;
 use App\Http\Controllers\API\Map\MapController;
+use App\Http\Controllers\API\Post\CategoriesController;
+use App\Http\Controllers\API\Post\CommentController;
+use App\Http\Controllers\API\Post\PostController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\UserProfileController;
 use App\Http\Controllers\Localization\LocaleController;
@@ -83,4 +86,34 @@ Route::group(['prefix' => 'map', 'middleware' => 'auth'], static function () {
             Route::delete('/delete/{point}', [MapController::class, 'deleteUserPlacePoint'])->name('map.delete_map_point');
         }
     );
+});
+
+Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
+    Route::prefix('category')->group(
+        static function () {
+            Route::get('', [CategoriesController::class, 'getCategory'])->name('post.category.index');
+            Route::get('/list', [CategoriesController::class, 'getCategories'])->name('post.categories.list');
+            Route::post('/create', [CategoriesController::class, 'addCategories'])->name('post.category.create');
+            Route::put('/edit', [CategoriesController::class, 'editCategories'])->name('post.category.update');
+            Route::delete('/delete', [CategoriesController::class, 'deleteCategories'])->name('post.category.delete');
+        }
+    );
+
+    Route::prefix('comment')->group(
+        static function () {
+            Route::get('', [CommentController::class, 'getComment'])->name('post.comment.index');
+            Route::get('/list', [CommentController::class, 'getComments'])->name('post.comments.list');
+            Route::post('/create', [CommentController::class, 'createComment'])->name('post.comment.create');
+            Route::put('/edit', [CommentController::class, 'editComment'])->name('post.comment.update');
+            Route::delete('/delete', [CommentController::class, 'deleteComment'])->name('post.comment.delete');
+        }
+    );
+
+    Route::get('', [PostController::class, 'getPost'])->name('post.index');
+    Route::get('/list', [PostController::class, 'getPosts'])->name('posts.list');
+    Route::get('/saved', [PostController::class, 'getSavedPosts'])->name('posts.list.saved');
+    Route::post('/create', [PostController::class, 'addPost'])->name('post.create');
+    Route::put('/edit', [PostController::class, 'editPost'])->name('post.update');
+    Route::put('/like', [PostController::class, 'likePost'])->name('post.like');
+    Route::delete('/delete', [PostController::class, 'deletePost'])->name('post.delete');
 });

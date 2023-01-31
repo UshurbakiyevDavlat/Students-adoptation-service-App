@@ -24,11 +24,6 @@ class PostController extends Controller
         return PostResource::make($post);
     }
 
-    public function getAmountOfLikes(Post $post): int
-    {
-        return $post->likes()->where('liked', 1)->count();
-    }
-
     public function getSavedPosts(User $user): PostCollection
     {
         return PostCollection::make($user->savedPosts()->paginate());
