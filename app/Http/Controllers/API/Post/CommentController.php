@@ -21,7 +21,7 @@ class CommentController extends Controller
 
     public function getComments(): CommentCollection
     {
-        return CommentCollection::make(Comment::all()->paginate());
+        return CommentCollection::make(Comment::paginate());
     }
 
     public function getAmountOfComments(Post $post): int

@@ -26,7 +26,8 @@ class CategoryCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|unique:post_categories|string',
+            'status' => 'required|int'
         ];
     }
 

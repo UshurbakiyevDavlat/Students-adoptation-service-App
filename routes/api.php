@@ -91,17 +91,17 @@ Route::group(['prefix' => 'map', 'middleware' => 'auth'], static function () {
 Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
     Route::prefix('category')->group(
         static function () {
-            Route::get('', [CategoriesController::class, 'getCategory'])->name('post.category.index');
+            Route::get('/index/{category}', [CategoriesController::class, 'getCategory'])->name('post.category.index');
             Route::get('/list', [CategoriesController::class, 'getCategories'])->name('post.categories.list');
             Route::post('/create', [CategoriesController::class, 'addCategories'])->name('post.category.create');
-            Route::put('/edit', [CategoriesController::class, 'editCategories'])->name('post.category.update');
-            Route::delete('/delete', [CategoriesController::class, 'deleteCategories'])->name('post.category.delete');
+            Route::put('/edit/{category}', [CategoriesController::class, 'editCategories'])->name('post.category.update');
+            Route::delete('/delete/{category}', [CategoriesController::class, 'deleteCategories'])->name('post.category.delete');
         }
     );
 
     Route::prefix('comment')->group(
         static function () {
-            Route::get('', [CommentController::class, 'getComment'])->name('post.comment.index');
+            Route::get('/index/{comment}', [CommentController::class, 'getComment'])->name('post.comment.index');
             Route::get('/list', [CommentController::class, 'getComments'])->name('post.comments.list');
             Route::post('/create', [CommentController::class, 'createComment'])->name('post.comment.create');
             Route::put('/edit', [CommentController::class, 'editComment'])->name('post.comment.update');
@@ -109,7 +109,7 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
         }
     );
 
-    Route::get('', [PostController::class, 'getPost'])->name('post.index');
+    Route::get('/index/{post}', [PostController::class, 'getPost'])->name('post.index');
     Route::get('/list', [PostController::class, 'getPosts'])->name('posts.list');
     Route::get('/saved', [PostController::class, 'getSavedPosts'])->name('posts.list.saved');
     Route::post('/create', [PostController::class, 'addPost'])->name('post.create');
