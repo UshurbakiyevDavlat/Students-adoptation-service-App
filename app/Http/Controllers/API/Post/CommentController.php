@@ -4,12 +4,11 @@ namespace App\Http\Controllers\API\Post;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\Comment\CommentCreateRequest;
-use App\Http\Requests\Post\Comment\CommentDeleteRequest;
 use App\Http\Requests\Post\Comment\CommentUpdateRequest;
 use App\Http\Resources\Post\Comment\Comment as CommentResource;
 use App\Http\Resources\Post\Comment\CommentCollection;
 use App\Models\Comment;
-use App\Models\Post;
+use Illuminate\Http\JsonResponse;
 
 class CommentController extends Controller
 {
@@ -24,23 +23,23 @@ class CommentController extends Controller
         return CommentCollection::make(Comment::paginate());
     }
 
-    public function getAmountOfComments(Post $post): int
+    public function createComment(CommentCreateRequest $request): JsonResponse
     {
-        return $post->comments()->where('status', 1)->count();
+        $data = $request->validated();
+        $comment = Comment::create($data);
+        return response()->json(['message' => 'comment_success_creation', 'data' => $comment], 201);
     }
 
-    public function createComment(CommentCreateRequest $request)
+    public function editComment(Comment $comment, CommentUpdateRequest $request): JsonResponse
     {
-
+        $data = $request->validated();
+        $comment->update($data);
+        return response()->json(['message' => 'comment_success_editing', 'data' => $comment], 201);
     }
 
-    public function editComment(CommentUpdateRequest $request)
+    public function deleteComment(Comment $comment): JsonResponse
     {
-
-    }
-
-    public function deleteComment(CommentDeleteRequest $request)
-    {
-
+        $comment->delete();
+        return response()->json(['message' => 'comment_success_deletion']);
     }
 }

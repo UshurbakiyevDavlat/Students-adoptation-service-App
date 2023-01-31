@@ -104,8 +104,8 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
             Route::get('/index/{comment}', [CommentController::class, 'getComment'])->name('post.comment.index');
             Route::get('/list', [CommentController::class, 'getComments'])->name('post.comments.list');
             Route::post('/create', [CommentController::class, 'createComment'])->name('post.comment.create');
-            Route::put('/edit', [CommentController::class, 'editComment'])->name('post.comment.update');
-            Route::delete('/delete', [CommentController::class, 'deleteComment'])->name('post.comment.delete');
+            Route::put('/edit/{comment}', [CommentController::class, 'editComment'])->name('post.comment.update');
+            Route::delete('/delete/{comment}', [CommentController::class, 'deleteComment'])->name('post.comment.delete');
         }
     );
 

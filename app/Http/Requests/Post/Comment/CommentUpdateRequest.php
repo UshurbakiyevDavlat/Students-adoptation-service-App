@@ -26,7 +26,7 @@ class CommentUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'body' => 'string|min:1|max:1000'
         ];
     }
 
