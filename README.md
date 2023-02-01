@@ -20,3 +20,13 @@
 ## Integrations:
     - Twillio
     - Mobizon
+
+## Installation
+    - docker-compose up -d
+    - docker-compose exec app composer install (Установка зависимостей)
+    - docker-compose exec app php artisan migrate (Миграции БД)
+    - docker-compose exec app php artisan key:generate (Генерация ключа приложения)
+    - docker-compose exec app php artisan storage:link (Создание ссылки на папку хранения файлов)
+    - sudo chmod 777 -R ./   (В случае если папка storage будет ругаться на права)
+    - docker-compose exec app php artisan optimize:clear (Очистка кэша всего)
+    
