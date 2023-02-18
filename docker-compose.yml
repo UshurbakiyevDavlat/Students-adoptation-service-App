@@ -7,6 +7,7 @@ services:
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
             - "80:80"
+            - "443:443"
         restart: unless-stopped
         depends_on:
             - app
@@ -94,7 +95,7 @@ services:
         volumes:
             - ./_docker/certbot/conf/letsencrypt:/etc/letsencrypt
             - ./_docker/certbot/www:/var/www/certbot
-        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+        command: certonly --webroot -w /var/www/certbot --force-renewal --email dushurbakiev@gmail.com -d unik.kz --agree-tos
         networks:
             - diploma
 
