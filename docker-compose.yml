@@ -78,7 +78,7 @@ services:
             - diploma
 
     worker:
-        image: diplomaworker
+        image: diploma
         command: [ 'php', 'artisan', 'queue:work' ]
         container_name: worker_docker_diploma
         restart: unless-stopped
