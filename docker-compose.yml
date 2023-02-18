@@ -92,6 +92,9 @@ services:
     certbot:
         image: certbot/certbot
         container_name: certbot
+        volumes:
+            - ./_docker/certbot/conf/letsencrypt:/etc/letsencrypt
+            - ./_docker/certbot/conf/www:/var/www/certbot
         command: certonly --webroot -w /var/www/certbot --force-renewal --email dushurbakiev@gmail.com -d unik.kz --agree-tos
         networks:
             - diploma
