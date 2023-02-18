@@ -77,22 +77,26 @@ services:
         networks:
             - diploma
 
-    #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name elasticsearch_docker_diploma elasticsearch:2.4.1 -Des.cluster.name="elasticsearch_docker_diploma"
-# TODO Закоменченно, пока не решится вопрос на сервере
-#    elasticsearch:
-#        container_name: elasticsearch_docker_diploma
-#        image: library/elasticsearch:8.6.0  #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
-#        environment:
-#            - Des.cluster.name=diplomas-data-cluster
-#            - xpack.security.enabled=false
-#            - "discovery.type=single-node"
-#        volumes:
-#            - diplomas-data:/usr/share/elasticsearch/data
-#        ports:
-#            - '9200:9200'
-#            - '9300:9300'
-#        networks:
-#            - diploma
+    worker:
+        image: sosedi
+        command: [ 'php', 'artisan', 'queue:work' ]
+        container_name: worker_docker_diploma
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - diploma
+
+    certbot:
+        image: certbot/certbot
+        container_name: certbot
+        volumes:
+            - ./_docker/certbot/conf/letsencrypt:/etc/letsencrypt
+            - ./_docker/certbot/www:/var/www/certbot
+        entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+        networks:
+            - diploma
 
 networks:
     diploma:
