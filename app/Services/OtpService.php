@@ -38,7 +38,7 @@ class OtpService implements OtpInterface
     private function createCode($phone): void
     {
         $this->code = UserEntryCode::create([
-            'code' => Str::random('6'),
+            'code' => 111, //Str::random('6'),
             'phone' => $phone
         ])->code;
 
