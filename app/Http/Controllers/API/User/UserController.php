@@ -5,8 +5,8 @@ namespace App\Http\Controllers\API\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\User\UserCreateRequest;
-use App\Http\Resources\User\User as UserResource;
-use App\Http\Resources\User\UserCollection;
+use App\Http\Resources\User\University as UserResource;
+use App\Http\Resources\User\UniversityCollection;
 use App\Models\User;
 use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
@@ -31,9 +31,9 @@ class UserController extends Controller
      * )
      */
 
-    public function index(): UserCollection
+    public function index(): UniversityCollection
     {
-        return UserCollection::make((new User())->setFilters(['name', 'phone'])->getFiltered());
+        return UniversityCollection::make((new User())->setFilters(['name', 'phone'])->getFiltered());
     }
 
     /**

@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\API\Auth\AuthController;
 use App\Http\Controllers\API\Friends\FriendsController;
+use App\Http\Controllers\API\Hobby\HobbyController;
 use App\Http\Controllers\API\Map\MapController;
 use App\Http\Controllers\API\Post\CategoriesController;
 use App\Http\Controllers\API\Post\CommentController;
 use App\Http\Controllers\API\Post\PostController;
+use App\Http\Controllers\API\Speciality\SpecialityController;
+use App\Http\Controllers\API\University\UniversityController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\UserProfileController;
 use App\Http\Controllers\Localization\LocaleController;
@@ -86,6 +89,18 @@ Route::group(['prefix' => 'map', 'middleware' => 'auth'], static function () {
             Route::delete('/delete/{point}', [MapController::class, 'deleteUserPlacePoint'])->name('map.delete_map_point');
         }
     );
+});
+
+Route::prefix('hobby')->group(static function () {
+    Route::get('/index', [HobbyController::class, 'index'])->name('hobby.index');
+});
+
+Route::prefix('university')->group(static function () {
+    Route::get('/index', [UniversityController::class, 'index'])->name('university.index');
+});
+
+Route::prefix('speciality')->group(static function () {
+    Route::get('/index', [SpecialityController::class, 'index'])->name('speciality.index');
 });
 
 Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
