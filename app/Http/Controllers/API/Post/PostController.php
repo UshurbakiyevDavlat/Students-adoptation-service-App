@@ -24,9 +24,9 @@ class PostController extends Controller
         return PostResource::make($post);
     }
 
-    public function getSavedPosts(User $user): PostCollection
+    public function getSavedPosts(): PostCollection
     {
-        return PostCollection::make($user->savedPosts()->paginate());
+        return PostCollection::make(auth()->user()->savedPosts()->paginate());
     }
 
     public function likePost(Post $post): JsonResponse
