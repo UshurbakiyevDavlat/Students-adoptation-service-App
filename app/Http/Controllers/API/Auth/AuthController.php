@@ -55,7 +55,7 @@ class AuthController extends Controller
         $entryCode->used = 1;
         $entryCode->save();
 
-        return $this->respondWithToken($token);
+        return response()->json(['id' => auth()->user()->id,'token_data' => $this->respondWithToken($token)]);
     }
 
     /**

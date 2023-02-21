@@ -108,7 +108,11 @@ class UserController extends Controller
         $entryCode->save();
         DB::commit();
 
-        return $errors ?: UserResource::make($user);
+        $credentials = $request->only(['phone', 'password']);
+        $token = auth()->attempt($credentials);
+        $user->token = (object)['access_token' => $token];
+
+        return $errors ?: UserResource::make($user)->response()->setStatusCode(200);
     }
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse

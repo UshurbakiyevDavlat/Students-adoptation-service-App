@@ -91,7 +91,7 @@ services:
 
     certbot:
         image: certbot/certbot
-        container_name: certbot
+        container_name: certbot-diploma
         volumes:
             - ./_docker/certbot/conf/letsencrypt:/etc/letsencrypt
             - ./_docker/certbot/conf/www:/var/www/certbot
