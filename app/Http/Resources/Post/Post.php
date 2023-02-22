@@ -18,7 +18,7 @@ class Post extends JsonResource
         $post = parent::toArray($request);
         $post['amountOfLikes'] = parent::likes()->where('liked', 1)->count();
         $post['amountOfComments'] = parent::comments()->where('status', 1)->count();
-        $post['authorName'] = parent::user()->get()->name;
+        $post['authorName'] = parent::user()->first()->name;
 
         return $post;
     }
