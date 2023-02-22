@@ -30,13 +30,21 @@ class PostController extends Controller
 
     public function likePost(Post $post): JsonResponse
     {
+        $alreadyLiked = $post->likes()
+            ->where('author_id', auth()->user()->id)
+            ->withPivot('liked')
+            ->first()
+            ->pivot
+            ->liked;
+
         $post->likes()
             ->where('author_id', auth()->user()->id)
             ->withPivot('liked')
             ->first()
-            ->pivot->update(['liked' => 1]);
+            ->pivot
+            ->update(['liked' => !$alreadyLiked]);
 
-        return response()->json(['message' => 'Post liked']);
+        return response()->json(['message' => !$alreadyLiked ? 'Post liked' : 'Post unliked']);
     }
 
     public function savePost(Post $post): JsonResponse
