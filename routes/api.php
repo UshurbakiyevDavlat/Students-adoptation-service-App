@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthController;
+use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Friends\FriendsController;
 use App\Http\Controllers\API\Hobby\HobbyController;
 use App\Http\Controllers\API\Map\MapController;
@@ -48,13 +49,15 @@ Route::prefix('user')->group(
         Route::get('/{user}', [UserController::class, 'show'])->name('user.show');
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::post('/', [UserController::class, 'create'])->name('user.create');
-        Route::post('/profile/{user}', [UserProfileController::class, 'fillProfile'])
+        Route::post('/profile', [UserProfileController::class, 'fillProfile'])
             ->middleware('auth')
             ->name('profile.update');
         Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
-        Route::delete('/{user}', [UserController::class, 'delete'])->middleware(['auth', 'admin'])->name('user.delete');
+        Route::delete('/{user}', [UserController::class, 'delete'])
+            ->middleware(['auth', 'admin'])
+            ->name('user.delete');
     });
 
 Route::group(['prefix' => 'friends', 'middleware' => 'auth'], static function () {
@@ -97,6 +100,10 @@ Route::prefix('hobby')->group(static function () {
 
 Route::prefix('university')->group(static function () {
     Route::get('/index', [UniversityController::class, 'index'])->name('university.index');
+});
+
+Route::prefix('city')->group(static function () {
+    Route::get('/index', [CityController::class, 'index'])->name('city.index');
 });
 
 Route::prefix('speciality')->group(static function () {
