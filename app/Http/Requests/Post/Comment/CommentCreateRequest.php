@@ -27,8 +27,7 @@ class CommentCreateRequest extends FormRequest
     {
         return [
             'body' => 'required|string|min:1|max:1000',
-            'post_id' => 'required|integer|exists:posts,id',
-            'user_id' => 'required|integer|exists:users,id',
+            'post_id' => 'required|integer|exists:posts,id'
         ];
     }
 
