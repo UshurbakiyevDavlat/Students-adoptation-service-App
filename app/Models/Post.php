@@ -24,7 +24,7 @@ class Post extends Model
 
     public function user(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'users_post', 'post_id', 'user_id');
+        return $this->belongsToMany(User::class, 'users_post', 'post_id', 'author_id');
     }
 
     public function mediaFiles(): HasMany
