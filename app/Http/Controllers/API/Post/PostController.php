@@ -8,7 +8,6 @@ use App\Http\Requests\Post\PostUpdateRequest;
 use App\Http\Resources\Post\Post as PostResource;
 use App\Http\Resources\Post\PostCollection;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
