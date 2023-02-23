@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\University;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UniversityFactory extends Factory
@@ -25,8 +26,14 @@ class UniversityFactory extends Factory
             'International IT University',
             'Almaty Management University'
         ];
+        $randomElement = $this->faker->unique()->randomElement($dictUniversities);
+
+        while (University::all()->has($randomElement)) {
+            $randomElement = $this->faker->unique()->randomElement($dictUniversities);
+        }
+
         return [
-            'title' => $this->faker->unique()->randomElement($dictUniversities)
+            'title' => $randomElement
         ];
     }
 }

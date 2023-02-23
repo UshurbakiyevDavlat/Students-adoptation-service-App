@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Hobby;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class HobbyFactory extends Factory
@@ -25,8 +26,15 @@ class HobbyFactory extends Factory
             'Collecting',
             'Writing'
         ];
+
+        $randomElement = $this->faker->unique()->randomElement($dictHobbies);
+
+        while (Hobby::all()->has($randomElement)) {
+            $randomElement = $this->faker->unique()->randomElement($dictHobbies);
+        }
+
         return [
-            'title' => $this->faker->unique()->randomElement($dictHobbies)
+            'title' => $randomElement
         ];
     }
 }

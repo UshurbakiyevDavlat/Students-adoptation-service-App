@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Speciality;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SpecialityFactory extends Factory
@@ -25,8 +26,14 @@ class SpecialityFactory extends Factory
             'Cyber Security',
             'Devops'
         ];
+        $randomElement = $this->faker->unique()->randomElement($dictSpecialities);
+
+        while (Speciality::all()->has($randomElement)) {
+            $randomElement = $this->faker->unique()->randomElement($dictSpecialities);
+        }
+
         return [
-            'title' => $this->faker->unique()->randomElement($dictSpecialities)
+            'title' => $randomElement
         ];
     }
 }

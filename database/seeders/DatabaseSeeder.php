@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         University::factory(10)->create()->unique('title');
         Speciality::factory(10)->create()->unique('title');
         User::factory(10)->create();
-        UserHasHobbies::factory(10)->create();
+        UserHasHobbies::factory(10)->create(); //TODO что за фигня? Сделать нормально через createMany, и удали модель..
 
         $admin = Role::create(['name' => 'admin']);
         $user = Role::create(['name' => 'user']);
