@@ -26,7 +26,7 @@ class UniversityFactory extends Factory
             'Almaty Management University'
         ];
         return [
-            'title' => $this->faker->randomElement($dictUniversities)
+            'title' => $this->faker->unique()->randomElement($dictUniversities)
         ];
     }
 }

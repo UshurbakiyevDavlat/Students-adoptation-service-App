@@ -26,7 +26,7 @@ class CityFactory extends Factory
             'Kokshetau'
         ];
         return [
-            'title' => $this->faker->randomElement($dictCities)
+            'title' => $this->faker->unique()->randomElement($dictCities)
         ];
     }
 }

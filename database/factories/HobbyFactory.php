@@ -26,7 +26,7 @@ class HobbyFactory extends Factory
             'Writing'
         ];
         return [
-            'title' => $this->faker->randomElement($dictHobbies)
+            'title' => $this->faker->unique()->randomElement($dictHobbies)
         ];
     }
 }

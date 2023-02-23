@@ -26,7 +26,7 @@ class SpecialityFactory extends Factory
             'Devops'
         ];
         return [
-            'title' => $this->faker->randomElement($dictSpecialities)
+            'title' => $this->faker->unique()->randomElement($dictSpecialities)
         ];
     }
 }
