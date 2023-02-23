@@ -11,10 +11,22 @@ class CityFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $dictCities = [
+            'Astana',
+            'Almaty',
+            'Shymkent',
+            'Karaganda',
+            'Aktobe',
+            'Taraz',
+            'Pavlodar',
+            'Kyzylorda',
+            'Atyrau',
+            'Kokshetau'
+        ];
         return [
-            'title' => $this->faker->city
+            'title' => $this->faker->randomElement($dictCities)
         ];
     }
 }

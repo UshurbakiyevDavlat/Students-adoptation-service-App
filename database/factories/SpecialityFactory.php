@@ -11,10 +11,22 @@ class SpecialityFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $dictSpecialities = [
+            'Program Engineer',
+            'Business',
+            'Engineering',
+            'Medicine',
+            'Psychology',
+            'Law',
+            'Education',
+            'Computer Science',
+            'Cyber Security',
+            'Devops'
+        ];
         return [
-            'title' => $this->faker->jobTitle
+            'title' => $this->faker->randomElement($dictSpecialities)
         ];
     }
 }

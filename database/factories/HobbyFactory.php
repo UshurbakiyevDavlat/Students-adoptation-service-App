@@ -11,10 +11,22 @@ class HobbyFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $dictHobbies = [
+            'Reading books',
+            'Playing sports',
+            'Traveling',
+            'Cooking',
+            'Painting',
+            'Gardening',
+            'Playing musical instruments',
+            'Photography',
+            'Collecting',
+            'Writing'
+        ];
         return [
-            'title' => $this->faker->jobTitle
+            'title' => $this->faker->randomElement($dictHobbies)
         ];
     }
 }

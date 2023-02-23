@@ -11,10 +11,22 @@ class UniversityFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $dictUniversities = [
+            'Nazarbayev University',
+            'Kazakh-British Technical University',
+            'Al-Farabi Kazakh National University',
+            'Karaganda State Technical University',
+            'Eurasian National University',
+            'Suleyman Demirel University',
+            'Kazakh-German University',
+            'KIMEP University',
+            'International IT University',
+            'Almaty Management University'
+        ];
         return [
-            'title' => $this->faker->name . '`s university.'
+            'title' => $this->faker->randomElement($dictUniversities)
         ];
     }
 }
