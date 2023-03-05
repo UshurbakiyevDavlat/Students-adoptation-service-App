@@ -13,6 +13,7 @@ trait ModelFilterTrait
     {
         $this->filteredResult = QueryBuilder::for(self::class)
             ->allowedFilters($filters)
+            ->orderByDesc('created_at')
             ->get();
 //            ->paginate(); TODO пока закоментил, т.к на мобилке не успевают реализовать пагинацию
 
