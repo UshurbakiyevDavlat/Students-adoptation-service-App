@@ -84,9 +84,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Hobby::class, 'user_has_hobbies', 'user_id', 'hobby_id')->withTimestamps();
     }
 
-    public function posts(): BelongsToMany
+    public function posts(): HasMany
     {
-        return $this->belongsToMany(Post::class, 'users_post', 'author_id', 'post_id')->withTimestamps()->withPivot('liked');
+        return $this->hasMany(Post::class, 'author_id', 'id');
     }
 
     public function savedPosts(): BelongsToMany

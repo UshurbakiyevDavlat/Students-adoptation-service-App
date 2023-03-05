@@ -34,31 +34,38 @@ class PostController extends Controller
             ->where('author_id', auth()->user()->id)
             ->withPivot('liked')
             ->first()
-            ->pivot
-            ->liked;
+            ?->pivot
+            ?->liked;
 
-        $post->likes()
-            ->where('author_id', auth()->user()->id)
-            ->withPivot('liked')
-            ->first()
-            ->pivot
-            ->update(['liked' => !$alreadyLiked]);
+        if ($alreadyLiked) {
+            $post->likes()->detach(auth()->user()->id);
+        } else {
+            $post->likes()->attach(auth()->user()->id, ['liked' => 1, 'created_at' => now(), 'updated_at' => now()]);
+        }
 
         return response()->json(['message' => !$alreadyLiked ? 'Post liked' : 'Post unliked']);
     }
 
     public function savePost(Post $post): JsonResponse
     {
-        $post->savedPosts()->attach(auth()->user()->id);
-        return response()->json(['message' => 'Post saved']);
+        $alreadySaved = $post->savedPosts()
+            ->where('user_ID', auth()->user()->id)
+            ->first();
+
+        if ($alreadySaved) {
+            $post->savedPosts()->detach(auth()->user()->id);
+        } else {
+            $post->savedPosts()->attach(auth()->user()->id, ['created_at' => now(), 'updated_at' => now()]);
+        }
+
+        return response()->json(['message' => !$alreadySaved ? 'Post saved' : 'Post unsaved']);
     }
 
     public function addPost(PostCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
         $post = Post::create($data);
-        $user = auth()->user();
-        $user->posts()->save($post);
 
         return response()->json(['message' => 'Post created', 'post' => $post]);
     }
