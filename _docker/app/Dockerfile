@@ -1,10 +1,7 @@
 FROM php:8.0-fpm
 
-# Update packages
-RUN apt-get update
-
-# Install PHP and composer dependencies
-RUN apt-get install -qq git curl libzip-dev libmcrypt-dev libjpeg-dev libpng-dev libfreetype6-dev libbz2-dev
+# Update packages and  Install PHP and composer dependencies
+RUN apt-get update &&  apt-get install -qq git curl libzip-dev libmcrypt-dev libjpeg-dev libpng-dev libfreetype6-dev libbz2-dev
 
 # Install xdebug
 RUN pecl install xdebug \
