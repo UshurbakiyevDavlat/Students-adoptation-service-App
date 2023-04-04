@@ -119,4 +119,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserFriendRequest::class, 'user_id', 'id');
     }
 
+    public function userChats(): BelongsToMany
+    {
+        return $this->belongsToMany(__CLASS__, 'personal_chats', 'first_participant', 'second_participant')
+            ->withTimestamps()
+            ->withPivot('id');
+    }
+
 }

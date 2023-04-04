@@ -5,6 +5,7 @@ use App\Http\Controllers\API\City\CityController;
 use App\Http\Controllers\API\Friends\FriendsController;
 use App\Http\Controllers\API\Hobby\HobbyController;
 use App\Http\Controllers\API\Map\MapController;
+use App\Http\Controllers\API\Messenger\MessengerController;
 use App\Http\Controllers\API\Post\CategoriesController;
 use App\Http\Controllers\API\Post\CommentController;
 use App\Http\Controllers\API\Post\PostController;
@@ -139,4 +140,14 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
     Route::put('/edit/{post}', [PostController::class, 'editPost'])->name('post.update');
     Route::patch('/like/{post}', [PostController::class, 'likePost'])->name('post.like');
     Route::delete('/delete/{post}', [PostController::class, 'deletePost'])->name('post.delete');
+});
+
+Route::group(['prefix' => 'messenger', 'middleware' => 'auth'], static function () {
+    Route::get('/list/chats', [MessengerController::class, 'getChats'])->name('messenger.chats.list');
+    Route::get('/list/{chat}/messages', [MessengerController::class, 'getChatMessages'])->name('messenger.chats.messages.list');
+    Route::post('/create/chat', [MessengerController::class, 'createChat'])->name('messenger.chats.create');
+    Route::post('/create/message', [MessengerController::class, 'createMessage'])->name('messenger.messages.create');
+    Route::patch('/{user}/update', [MessengerController::class, 'updateMessage'])->name('messenger.update');
+    Route::delete('/{user}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
+    Route::delete('/{user}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
 });
