@@ -48,7 +48,7 @@ class MessengerController extends Controller
     public function createMessage(CreateMessageRequest $request): JsonResponse
     {
         $data = $request->validated();
-
+        $data['sender_id'] = auth()->user()->getAuthIdentifier();
         Messages::create($data);
         return response()->json(['message' => 'Message created successfully'], 201);
     }

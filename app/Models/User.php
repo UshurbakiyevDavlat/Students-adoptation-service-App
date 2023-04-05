@@ -123,6 +123,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(__CLASS__, 'personal_chats', 'first_participant', 'second_participant')
             ->withTimestamps()
+            ->without('hobbies')
             ->withPivot('id');
     }
 

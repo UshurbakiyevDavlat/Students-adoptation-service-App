@@ -147,7 +147,7 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth'], static function 
     Route::get('/list/{chat}/messages', [MessengerController::class, 'getChatMessages'])->name('messenger.chats.messages.list');
     Route::post('/create/chat', [MessengerController::class, 'createChat'])->name('messenger.chats.create');
     Route::post('/create/message', [MessengerController::class, 'createMessage'])->name('messenger.messages.create');
-    Route::patch('/{user}/update', [MessengerController::class, 'updateMessage'])->name('messenger.update');
-    Route::delete('/{user}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
-    Route::delete('/{user}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
+    Route::patch('/{message}/update/message', [MessengerController::class, 'updateMessage'])->name('messenger.update');
+    Route::delete('/{chat}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
+    Route::delete('/{message}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
 });
