@@ -14,6 +14,7 @@ use App\Http\Controllers\API\University\UniversityController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\UserProfileController;
 use App\Http\Controllers\Localization\LocaleController;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -151,3 +152,5 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth'], static function 
     Route::delete('/{chat}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
     Route::delete('/{message}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
 });
+
+Broadcast::routes(['middleware' => 'auth']);

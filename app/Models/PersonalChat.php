@@ -21,12 +21,12 @@ class PersonalChat extends Model
 
     public function firstUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'first_user_id');
+        return $this->belongsTo(User::class, 'first_participant');
     }
 
     public function secondUser(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'second_user_id');
+        return $this->belongsTo(User::class, 'second_participant');
     }
 
     public function messages(): HasMany
