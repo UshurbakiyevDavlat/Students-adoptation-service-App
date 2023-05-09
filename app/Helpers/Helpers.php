@@ -40,7 +40,6 @@ class Helpers
         }
 
         $locations = $locations->get();
-        dd($locations, $longitude, $latitude, empty($friends_ids));
 
         // Calculate the distance of each location from the specified point
         foreach ($locations as &$location) {
