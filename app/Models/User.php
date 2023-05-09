@@ -6,11 +6,13 @@ use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Helpers\Helpers;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -99,9 +101,15 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserMap::class, 'user_id', 'id');
     }
 
-    public function mapsPlaces(): HasMany
+    public function mapsFriendsLocation(): HasManyThrough
     {
-        return $this->hasMany(UserMapPlace::class, 'user_id', 'id');
+        return $this->hasManyThrough(UserMap::class, UserFriend::class, 'user_id', 'user_id', 'id', 'friend_id')
+            ->select('users_maps.*', 'users_friends.friend_id as friend_user_id');
+    }
+
+    public function mapsPlaces($model,$long,$lat,$range,$friend_ids = []): array
+    {
+        return Helpers::getNearbyLocations($model,$lat,$long,$range,$friend_ids);
     }
 
     public function friends(): HasMany

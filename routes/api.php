@@ -88,7 +88,7 @@ Route::group(['prefix' => 'map', 'middleware' => 'auth'], static function () {
 
     Route::prefix('points')->group(
         static function () {
-            Route::get('/', [MapController::class, 'getUserPlacePoints'])->name('map.get_map_points');
+            Route::get('/places/{type}/{lat}/{long}/{range}', [MapController::class, 'getUserPlacePoints'])->name('map.get_map_points');
             Route::post('/create', [MapController::class, 'createUserPlacePoint'])->name('map.create_map_point');
             Route::patch('/update/{point}', [MapController::class, 'updateUserPlacePoint'])->name('map.update_map_point');
             Route::delete('/delete/{point}', [MapController::class, 'deleteUserPlacePoint'])->name('map.delete_map_point');

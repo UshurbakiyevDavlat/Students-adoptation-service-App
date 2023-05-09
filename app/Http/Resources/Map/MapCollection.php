@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources\Map;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class MapCollection extends ResourceCollection
@@ -10,10 +12,13 @@ class MapCollection extends ResourceCollection
      * Transform the resource into an array.
      *
      * @param \Illuminate\Http\Request $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     * @return array|Arrayable|\JsonSerializable
      */
-    public function toArray($request)
+
+    public static $wrap = null;
+
+    public function toArray($request): AnonymousResourceCollection|array|\JsonSerializable|Arrayable
     {
-        return parent::toArray($request);
+        return Map::collection($this->collection);
     }
 }
