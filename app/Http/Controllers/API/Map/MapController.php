@@ -67,9 +67,9 @@ class MapController extends Controller
     {
         $user = Auth::user();
         $data = $request->validated();
-        $user?->mapsPlaces()->create($data);
+        $user?->mapPlaces()->create($data);
 
-        return response()->json(['message' => __('map_place_success_creation'), 'location' => $user?->mapsPlaces()->paginate()]);
+        return response()->json(['message' => __('map_place_success_creation'), 'location' => $user?->mapPlaces()->paginate()]);
     }
 
     public function updateUserLocation(UserMapLocationUpdateRequest $request)
@@ -85,9 +85,9 @@ class MapController extends Controller
     {
         $user = Auth::user();
         $data = $request->validated();
-        $user?->mapsPlaces()->where('id', $point->id)->update($data);
+        $user?->mapPlaces()->where('id', $point->id)->update($data);
 
-        return response()->json(['message' => __('map_place_success_update'), 'location' => $user?->mapsPlaces()->paginate()]);
+        return response()->json(['message' => __('map_place_success_update'), 'location' => $user?->mapPlaces()->paginate()]);
     }
 
     public function deleteUserLocation(): JsonResponse
@@ -101,8 +101,8 @@ class MapController extends Controller
     public function deleteUserPlacePoint(UserMapPlace $point): JsonResponse
     {
         $user = Auth::user();
-        $user?->mapsPlaces()->where('id', $point->id)->delete();
+        $user?->mapPlaces()->where('id', $point->id)->delete();
 
-        return response()->json(['message' => __('map_place_success_delete'), 'location' => $user?->mapsPlaces()->paginate()]);
+        return response()->json(['message' => __('map_place_success_delete'), 'location' => $user?->mapPlaces()->paginate()]);
     }
 }

@@ -107,6 +107,11 @@ class User extends Authenticatable implements JWTSubject
             ->select('users_maps.*', 'users_friends.friend_id as friend_user_id');
     }
 
+    public function mapPlaces(): HasMany
+    {
+        return $this->hasMany(UserMapPlace::class, 'user_id', 'id');
+    }
+
     public function mapsPlaces($model,$long,$lat,$range,$friend_ids = []): array
     {
         return Helpers::getNearbyLocations($model,$lat,$long,$range,$friend_ids);
