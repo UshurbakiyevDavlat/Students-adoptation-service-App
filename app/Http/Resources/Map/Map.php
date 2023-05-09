@@ -16,12 +16,6 @@ class Map extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            // add any other fields you want to include in the response
-        ];
+        return parent::toArray($request);
     }
 }
