@@ -30,12 +30,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::group([
     'middleware' => 'api',
-    'prefix' => 'auth'
+    'prefix' => 'auth:api'
 ], static function () {
     Route::post('login', [AuthController::class, 'login']);
-    Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
-    Route::get('refresh', [AuthController::class, 'refresh'])->middleware('auth');
-    Route::get('me', [AuthController::class, 'me'])->middleware('auth');
+    Route::get('logout', [AuthController::class, 'logout'])->middleware('auth:api');
+    Route::get('refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
+    Route::get('me', [AuthController::class, 'me'])->middleware('auth:api');
 });
 
 //TODO сделать отдельный канал для логов
@@ -52,17 +52,17 @@ Route::prefix('user')->group(
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::post('/', [UserController::class, 'create'])->name('user.create');
         Route::post('/profile', [UserProfileController::class, 'fillProfile'])
-            ->middleware('auth')
+            ->middleware('auth:api')
             ->name('profile.update');
         Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
         Route::delete('/{user}', [UserController::class, 'delete'])
-            ->middleware(['auth', 'admin'])
+            ->middleware(['auth:api', 'admin'])
             ->name('user.delete');
     });
 
-Route::group(['prefix' => 'friends', 'middleware' => 'auth'], static function () {
+Route::group(['prefix' => 'friends', 'middleware' => 'auth:api'], static function () {
     Route::prefix('request')->group(
         static function () {
             Route::get('/self/list', [FriendsController::class, 'getMyFriendsRequestList'])->name('my.friend.request.list');
@@ -76,7 +76,7 @@ Route::group(['prefix' => 'friends', 'middleware' => 'auth'], static function ()
     Route::delete('/delete', [FriendsController::class, 'deleteFriend'])->name('friend.delete_friend');
 });
 
-Route::group(['prefix' => 'map', 'middleware' => 'auth'], static function () {
+Route::group(['prefix' => 'map', 'middleware' => 'auth:api'], static function () {
     Route::prefix('location')->group(
         static function () {
             Route::get('/', [MapController::class, 'getUserMapLocation'])->name('map.get_user_map_location');
@@ -112,7 +112,7 @@ Route::prefix('speciality')->group(static function () {
     Route::get('/index', [SpecialityController::class, 'index'])->name('speciality.index');
 });
 
-Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
+Route::group(['prefix' => 'post', 'middleware' => 'auth:api'], static function () {
     Route::prefix('category')->group(
         static function () {
             Route::get('/index/{category}', [CategoriesController::class, 'getCategory'])->name('post.category.index');
@@ -143,7 +143,7 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth'], static function () {
     Route::delete('/delete/{post}', [PostController::class, 'deletePost'])->name('post.delete');
 });
 
-Route::group(['prefix' => 'messenger', 'middleware' => 'auth'], static function () {
+Route::group(['prefix' => 'messenger', 'middleware' => 'auth:api'], static function () {
     Route::get('/list/chats', [MessengerController::class, 'getChats'])->name('messenger.chats.list');
     Route::get('/list/{chat}/messages', [MessengerController::class, 'getChatMessages'])->name('messenger.chats.messages.list');
     Route::post('/create/chat', [MessengerController::class, 'createChat'])->name('messenger.chats.create');
@@ -153,4 +153,4 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth'], static function 
     Route::delete('/{message}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
 });
 
-Broadcast::routes(['middleware' => 'auth']);
+Broadcast::routes(['middleware' => 'auth:api']);

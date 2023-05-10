@@ -1,16 +1,18 @@
 <?php
-
 namespace App\Http\Middleware;
 
-use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Closure;
+use Illuminate\Http\Request;
 
-class Authenticate extends Middleware
+class Authenticate
 {
-    protected function redirectTo($request)
+    public function handle(Request $request, Closure $next)
     {
-        if ($request->wantsJson()) {
+        if (! $request->user()) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    }
 
+        return $next($request);
+    }
 }
+
