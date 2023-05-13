@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Post\CategoriesController;
 use App\Http\Controllers\API\Post\CommentController;
 use App\Http\Controllers\API\Post\PostController;
 use App\Http\Controllers\API\Speciality\SpecialityController;
+use App\Http\Controllers\API\Tinder\TinderController;
 use App\Http\Controllers\API\University\UniversityController;
 use App\Http\Controllers\API\User\UserController;
 use App\Http\Controllers\API\User\UserProfileController;
@@ -150,6 +151,11 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth:api'], static funct
     Route::patch('/{message}/update/message', [MessengerController::class, 'updateMessage'])->name('messenger.update');
     Route::delete('/{chat}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
     Route::delete('/{message}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
+});
+
+Route::group(['prefix' => 'tinder', 'middleware' => 'auth:api'], static function () {
+    Route::get('matching', [TinderController::class, 'matching'])->name('tinder.matching');
+    Route::get('likeOrDislike/{user}/{status}', [TinderController::class, 'setLikeOrDislike'])->name('tinder.likeOrDislike');
 });
 
 Broadcast::routes(['middleware' => 'auth:api']);

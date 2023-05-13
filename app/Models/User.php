@@ -112,9 +112,9 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(UserMapPlace::class, 'user_id', 'id');
     }
 
-    public function mapsPlaces($model,$long,$lat,$range,$friend_ids = []): array
+    public function mapsPlaces($model, $long, $lat, $range, $friend_ids = []): array
     {
-        return Helpers::getNearbyLocations($model,$lat,$long,$range,$friend_ids);
+        return Helpers::getNearbyLocations($model, $lat, $long, $range, $friend_ids);
     }
 
     public function friends(): HasMany
@@ -138,6 +138,16 @@ class User extends Authenticatable implements JWTSubject
             ->withTimestamps()
             ->without('hobbies')
             ->withPivot('id');
+    }
+
+    public function matches(): HasMany
+    {
+        return $this->hasMany(Matching::class, 'user_id', 'id');
+    }
+
+    public function matchedBy(): HasMany
+    {
+        return $this->hasMany(Matching::class, 'partner_id', 'id');
     }
 
 }
