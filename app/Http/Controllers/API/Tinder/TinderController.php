@@ -76,9 +76,22 @@ class TinderController extends Controller
         $liked = $status ? 1 : 2;
         $user = auth()->user();
 
-        dd($user->matches()->get());
-        $user->matches()->where('partner_id', $partner->id)->update(['is_match' => $liked]);
-        $partner->matchedBy()->where('user_id', $user->id)->update(['is_match' => $liked]);
+        $matches = $user->matches()->get();
+        $partner_matches = $user->matchedBy()->get();
+
+        $matches->each(function ($match) use ($partner, $liked) {
+            if ($match->partner_id == $partner->id) {
+                $match->is_match = $liked;
+                $match->save();
+            }
+        });
+
+        $partner_matches->each(function ($match) use ($partner, $liked) {
+            if ($match->user_id == $partner->id) {
+                $match->is_match = $liked;
+                $match->save();
+            }
+        });
 
 
         return response()->json(['message' => $status ? 'User was liked!' : 'User was disliked']);

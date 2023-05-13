@@ -155,7 +155,7 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth:api'], static funct
 
 Route::group(['prefix' => 'tinder', 'middleware' => 'auth:api'], static function () {
     Route::get('matching', [TinderController::class, 'matching'])->name('tinder.matching');
-    Route::get('likeOrDislike/{user}/{status}', [TinderController::class, 'setLikeOrDislike'])->name('tinder.likeOrDislike');
+    Route::get('likeOrDislike/{partner}/{status}', [TinderController::class, 'setLikeOrDislike'])->name('tinder.likeOrDislike');
 });
 
 Broadcast::routes(['middleware' => 'auth:api']);
