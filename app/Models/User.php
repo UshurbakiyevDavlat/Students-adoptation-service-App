@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
@@ -22,7 +23,7 @@ class User extends Authenticatable implements JWTSubject
     use Notifiable;
     use ModelFilterTrait;
 
-    protected $with = ['hobbies'];
+    protected $with = ['hobbies','city','university','speciality'];
     /**
      * The attributes that are mass assignable.
      *
@@ -84,6 +85,21 @@ class User extends Authenticatable implements JWTSubject
     public function hobbies(): BelongsToMany
     {
         return $this->belongsToMany(Hobby::class, 'user_has_hobbies', 'user_id', 'hobby_id')->withTimestamps();
+    }
+
+    public function city(): BelongsTo
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
+
+    public function university(): BelongsTo
+    {
+        return $this->belongsTo(University::class, 'university_id');
+    }
+
+    public function speciality(): BelongsTo
+    {
+        return $this->belongsTo(Speciality::class, 'speciality_id');
     }
 
     public function posts(): HasMany
