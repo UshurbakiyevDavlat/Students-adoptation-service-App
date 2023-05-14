@@ -47,7 +47,7 @@ services:
 
 
     db: # docker-compose exec db bash =>  mysql -u root -p => show databases;
-        image: mysql:5.7
+        image: mysql:8.0
         restart: always
         volumes:
             - ./tmp/db:/var/lib/mysql
