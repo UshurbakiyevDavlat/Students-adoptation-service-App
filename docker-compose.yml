@@ -53,6 +53,8 @@ services:
             - ./tmp/db:/var/lib/mysql
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: root
+            MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
         ports:
             - "3306:3306"
