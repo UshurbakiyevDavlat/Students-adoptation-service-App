@@ -38,7 +38,7 @@ class TinderController extends Controller
         if ($matchingUsers->isEmpty()) {
             return response()->json([
                 'message' => 'No matching users found',
-            ], 404);
+            ]);
         }
 
         $matchingUser = $matchingUsers->first();
