@@ -6,30 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Messenger\CreateChatRequest;
 use App\Http\Requests\Messenger\CreateMessageRequest;
 use App\Http\Requests\Messenger\UpdateMessageRequest;
+use App\Http\Resources\Messenger\ChatsCollection;
+use App\Http\Resources\Messenger\MessageCollection;
 use App\Models\Messages;
 use App\Models\PersonalChat;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class MessengerController extends Controller
 {
 
-    public function getChats(): Collection
+    public function getChats(): ChatsCollection
     {
         $user = auth()->user();
-        return $user->userChats()->get();
+        return ChatsCollection::make($user->userChats()->get());
     }
 
 
     public function getChatMessages(PersonalChat $chat)
     {
-        return $chat->messages()->get();
+        return MessageCollection::make($chat->messages()->get());
     }
-
-    public function getChatMessage() //TODO Для поиска по чату, нужно будет
-    {
-    }
-
 
     public function createChat(CreateChatRequest $request): JsonResponse
     {
