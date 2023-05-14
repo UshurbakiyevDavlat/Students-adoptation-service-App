@@ -28,6 +28,7 @@ class UserFillProfileRequest extends FormRequest
         return [
             'name' => 'string',
             'email' => 'string',
+            'avatar' => 'string',
             'birth_date' => 'date',
             'city_id' => 'int|exists:cities,id',
             'university_id' => 'int|exists:universities,id',

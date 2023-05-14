@@ -23,7 +23,7 @@ class Chats extends JsonResource
         return [
             'chat_id' => $this->pivot->id,
             'ownerName' => $this->name,
-            'owner_avatar' => null,//TODO Добавить аватар юзераs
+            'owner_avatar' => $this->avatar,//TODO Добавить аватар юзераs
             'dialog_created_at' => $this->pivot->created_at,
             'dialog_last_message' => Message::make($chat->messages()->latest()->first()),
         ];
