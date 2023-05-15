@@ -60,6 +60,10 @@ Route::prefix('user')->group(
         Route::delete('/{user}', [UserController::class, 'delete'])
             ->middleware(['auth:api', 'admin'])
             ->name('user.delete');
+
+        Route::post('/saveDeviceToken', [UserController::class, 'saveDeviceToken'])
+            ->middleware('auth:api')
+            ->name('user.saveDeviceToken');
     });
 
 Route::group(['prefix' => 'friends', 'middleware' => 'auth:api'], static function () {

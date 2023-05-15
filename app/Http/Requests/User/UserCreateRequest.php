@@ -29,7 +29,6 @@ class UserCreateRequest extends FormRequest
             'phone' => 'required|string|unique:users',
             'password' => 'required|string',
             'code' => 'required|exists:user_entries_code,code',
-            'fcm_token' => 'string', //TODO должен быть required, пока оставил так, чтобы не ломать тесты
         ];
     }
 

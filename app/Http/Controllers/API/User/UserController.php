@@ -160,8 +160,12 @@ class UserController extends Controller
         return $user->delete();
     }
 
-    public function getComments()
+    public function saveDeviceToken(string $deviceId): JsonResponse
     {
+        $user = auth()->user();
+        $user->fcm_token = $deviceId;
+        $user->save();
 
+        return response()->json(['status' => 200, 'message' => 'Device id saved']);
     }
 }
