@@ -151,6 +151,7 @@ Route::group(['prefix' => 'messenger', 'middleware' => 'auth:api'], static funct
     Route::patch('/{message}/update/message', [MessengerController::class, 'updateMessage'])->name('messenger.update');
     Route::delete('/{chat}/delete/chat', [MessengerController::class, 'deleteChat'])->name('messenger.chat.delete');
     Route::delete('/{message}/delete/message', [MessengerController::class, 'deleteMessage'])->name('messenger.message.delete');
+    Route::get('/searchChat/{name}', [MessengerController::class, 'searchChat'])->name('messenger.chat.search');
 });
 
 Route::group(['prefix' => 'tinder', 'middleware' => 'auth:api'], static function () {

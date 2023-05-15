@@ -72,4 +72,13 @@ class MessengerController extends Controller
         return response()->json(['message' => 'Deleted successfully']);
     }
 
+    public function searchChat($name): ChatsCollection
+    {
+        $chats = PersonalChat::whereHas('secondUser', static function ($query) use ($name) {
+            $query->where('name', 'like', "%{$name}%")
+                ->where('first_participant', auth()->user()->getAuthIdentifier());
+        })->get();
+
+        return ChatsCollection::make($chats);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Messenger;
 
 use App\Models\PersonalChat;
+use App\Models\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,14 +19,16 @@ class Chats extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        $chat = PersonalChat::find($this->pivot->id);
+        $chat_id = $this->pivot?->id ?: $this->id;
+        $chat = PersonalChat::find($chat_id);
+        $partner = $this->second_participant ? User::find($this->second_participant) : null;
 
         return [
-            'chat_id' => $this->pivot->id,
-            'ownerName' => $this->name,
-            'owner_avatar' => $this->avatar,//TODO Добавить аватар юзераs
-            'dialog_created_at' => $this->pivot->created_at,
-            'dialog_last_message' => Message::make($chat->messages()->latest()->first()),
+            'chat_id' => $this->pivot?->id ?: $this->id,
+            'ownerName' => $this->name ?: $partner->name,
+            'owner_avatar' => $this->avatar ?: $partner->avatar,
+            'dialog_created_at' => $this->pivot?->created_at ?: $this->created_at,
+            'dialog_last_message' => Message::make($chat?->messages()->latest()->first()),
         ];
     }
 }
