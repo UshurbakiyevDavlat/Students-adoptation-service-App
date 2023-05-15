@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class OtpService implements OtpInterface
 {
-    private string $text;
+//    private string $text;
     private string $code;
 
     public function sendOtp($user_phone): JsonResponse
@@ -42,7 +42,7 @@ class OtpService implements OtpInterface
             'phone' => $phone
         ])->code;
 
-        $this->text = 'Ваш otp код:' . $this->code;
+        //$this->text = 'Ваш otp код:' . $this->code;
     }
 
 }

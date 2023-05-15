@@ -25,8 +25,8 @@ class Chats extends JsonResource
 
         return [
             'chat_id' => $this->pivot?->id ?: $this->id,
-            'ownerName' => $this->name ?: $partner->name,
-            'owner_avatar' => $this->avatar ?: $partner->avatar,
+            'ownerName' => $this->name ?: $partner?->name,
+            'owner_avatar' => $this->avatar ?: $partner?->avatar,
             'dialog_created_at' => $this->pivot?->created_at ?: $this->created_at,
             'dialog_last_message' => Message::make($chat?->messages()->latest()->first()),
         ];
