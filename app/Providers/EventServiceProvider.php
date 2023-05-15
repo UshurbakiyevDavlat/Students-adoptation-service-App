@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\MessagePushNotification;
+use App\Listeners\SendPushNotificationListener;
 use App\Models\Messages;
 use App\Observers\MessageObserver;
 use Illuminate\Auth\Events\Registered;
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        MessagePushNotification::class => [
+            SendPushNotificationListener::class
         ],
     ];
 
