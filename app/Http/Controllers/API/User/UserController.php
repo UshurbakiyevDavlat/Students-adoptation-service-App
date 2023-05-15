@@ -12,6 +12,7 @@ use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -160,8 +161,14 @@ class UserController extends Controller
         return $user->delete();
     }
 
-    public function saveDeviceToken(string $deviceId): JsonResponse
+    public function saveDeviceToken(Request $request): JsonResponse
     {
+        $deviceId = $request->deviceId ?? null;
+
+        if (!$deviceId) {
+            return response()->json(['status' => 400, 'message' => 'Device id is required']);
+        }
+
         $user = auth()->user();
         $user->fcm_token = $deviceId;
         $user->save();
