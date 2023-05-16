@@ -12,7 +12,7 @@ class FCMService
             'https://fcm.googleapis.com/fcm/send',
             [
                 'to' => $token,
-                'notification' => $notification,
+                //'notification' => $notification,
                 'data' => $notification,
             ]
         );
