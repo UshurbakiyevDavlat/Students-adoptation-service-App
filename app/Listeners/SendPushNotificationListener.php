@@ -30,7 +30,6 @@ class SendPushNotificationListener implements ShouldQueue
             'body' => $message->text,
             'icon' => 'neil_i_armstrong.jpeg',
         ];
-
         try {
             FCMService::send($token, $notification);
             Log::info('Message sent to user with id - ' . $user->id);
