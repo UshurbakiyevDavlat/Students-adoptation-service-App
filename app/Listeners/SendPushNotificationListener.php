@@ -27,7 +27,8 @@ class SendPushNotificationListener implements ShouldQueue
 
         $notification = [
             'title' => $message->sender()->first()->name,
-            'body' => $message->text
+            'body' => $message->text,
+            'icon' => 'neil-i-armstrong.jpeg',
         ];
 
         try {
