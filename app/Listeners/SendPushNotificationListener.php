@@ -28,7 +28,7 @@ class SendPushNotificationListener implements ShouldQueue
         $notification = [
             'title' => $message->sender()->first()->name,
             'body' => $message->text,
-            'icon' => 'neil_i_armstrong.jpeg',
+            'icon' => '/neil_i_armstrong.jpeg',
         ];
         try {
             FCMService::send($token, $notification);
