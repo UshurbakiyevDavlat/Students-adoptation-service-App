@@ -13,6 +13,7 @@ class FCMService
             [
                 'to' => $token,
                 'notification' => $notification,
+                'data' => $notification,
             ]
         );
     }
