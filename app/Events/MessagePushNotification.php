@@ -6,10 +6,11 @@ use App\Models\Messages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class MessagePushNotification
+class MessagePushNotification implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -36,6 +37,6 @@ class MessagePushNotification
      */
     public function broadcastOn(): Channel|PrivateChannel|array
     {
-        return new PrivateChannel('message.'.$this->message->chat_id);
+        return new PrivateChannel('chat.' . $this->message->chat_id);
     }
 }
