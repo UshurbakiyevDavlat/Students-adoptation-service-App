@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class MessagePushNotification implements ShouldBroadcastNow
 {
@@ -37,6 +38,10 @@ class MessagePushNotification implements ShouldBroadcastNow
      */
     public function broadcastOn(): Channel|PrivateChannel|array
     {
+        Log::channel('websockets')->debug('Broadcasting event: MyWebSocketEvent', [
+            'payload' => $this->message,
+        ]);
+
         return new PrivateChannel('chat.' . $this->message->chat_id);
     }
 }
