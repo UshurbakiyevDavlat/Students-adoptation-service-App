@@ -32,7 +32,7 @@ services:
             - ./_docker/app/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
         depends_on:
             - db
-        environment:
+       # environment:
           #  - PHP_IDE_CONFIG=serverName=docker
            # - XDEBUG_CONFIG=remote_host=192.168.1.110
         logging:
