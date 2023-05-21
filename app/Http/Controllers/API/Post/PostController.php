@@ -13,8 +13,16 @@ use Illuminate\Http\JsonResponse;
 class PostController extends Controller
 {
 
-    public function getPosts($category): PostCollection
+    public function getPosts($category): JsonResponse|PostCollection
     {
+        if ($category === 'all') {
+            return PostCollection::make(Post::paginate());
+        }
+
+        if (!is_int($category)) {
+            return response()->json(['message' => 'Invalid category'], 400);
+        }
+
         return PostCollection::make(Post::whereHas('categories', static function ($query) use ($category) {
             $query->where('category_id', $category);
         })->paginate());
