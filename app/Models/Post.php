@@ -24,7 +24,7 @@ class Post extends Model
         'user_id',
     ];
 
-    protected $with = ['likedUsers'];
+    protected $with = ['likedUsers','categories'];
 
     public function user(): BelongsTo
     {
@@ -49,7 +49,7 @@ class Post extends Model
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(PostCategory::class, 'post_has_categories', 'post_id', 'category_id');
+        return $this->belongsToMany(PostCategory::class, 'post_has_categories', 'post_id', 'category_id')->withTimestamps();
     }
 
     public function comments(): HasMany

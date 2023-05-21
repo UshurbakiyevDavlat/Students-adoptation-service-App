@@ -13,9 +13,11 @@ use Illuminate\Http\JsonResponse;
 class PostController extends Controller
 {
 
-    public function getPosts(): PostCollection
+    public function getPosts($category): PostCollection
     {
-        return PostCollection::make((new Post())->setFilters(['description', 'title'])->getFiltered());
+        return PostCollection::make(Post::whereHas('categories', static function ($query) use ($category) {
+            $query->where('category_id', $category);
+        })->paginate());
     }
 
     public function getPost(Post $post): PostResource
@@ -64,10 +66,14 @@ class PostController extends Controller
     public function addPost(PostCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $postCategories = $data['categories_ids'];
+        unset($data['categories_ids']);
+
         $data['user_id'] = auth()->user()->id;
         $post = Post::create($data);
+        $post->categories()->attach($postCategories);
 
-        return response()->json(['message' => 'Post created', 'post' => $post]);
+        return response()->json(['message' => 'Post created', 'post' => $post->with('categories')->find($post->id)]);
     }
 
     public function editPost(Post $post, PostUpdateRequest $request): JsonResponse

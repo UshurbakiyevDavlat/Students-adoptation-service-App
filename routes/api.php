@@ -138,7 +138,7 @@ Route::group(['prefix' => 'post', 'middleware' => 'auth:api'], static function (
     );
 
     Route::get('/index/{post}', [PostController::class, 'getPost'])->name('post.index');
-    Route::get('/list', [PostController::class, 'getPosts'])->name('posts.list');
+    Route::get('/list/{category}', [PostController::class, 'getPosts'])->name('posts.list');
     Route::get('/saved', [PostController::class, 'getSavedPosts'])->name('posts.list.saved');
     Route::post('/create', [PostController::class, 'addPost'])->name('post.create');
     Route::put('/save/{post}', [PostController::class, 'savePost'])->name('posts.save');
