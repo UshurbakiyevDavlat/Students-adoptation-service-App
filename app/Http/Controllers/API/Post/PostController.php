@@ -19,7 +19,9 @@ class PostController extends Controller
             return PostCollection::make(Post::paginate());
         }
 
-        if (!is_int($category)) {
+        $category = (int)($category);
+
+        if (!$category) {
             return response()->json(['message' => 'Invalid category'], 400);
         }
 
