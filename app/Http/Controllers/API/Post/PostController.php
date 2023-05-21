@@ -43,7 +43,7 @@ class PostController extends Controller
             $post->likes()->attach(auth()->user()->id, ['liked' => 1, 'created_at' => now(), 'updated_at' => now()]);
         }
 
-        return response()->json(['message' => !$alreadyLiked ? 'Post liked' : 'Post unliked']);
+        return response()->json(['message' => !$alreadyLiked ? 'Post liked' : 'Post unliked', 'isLiked' => !$alreadyLiked]);
     }
 
     public function savePost(Post $post): JsonResponse
