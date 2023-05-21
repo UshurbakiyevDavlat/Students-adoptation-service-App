@@ -14,7 +14,7 @@ class AddAvatarFieldToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', static function (Blueprint $table) {
-            $table->text('avatar')->after('password');
+            $table->text('avatar')->nullable()->after('password');
         });
     }
 
