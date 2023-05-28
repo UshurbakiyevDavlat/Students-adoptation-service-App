@@ -18,3 +18,4 @@ xdebug.log
 /storage/testing_database.sqlite-journal
 /storage/testing_database.sqlite
 /_docker/certbot
+/public/packages
