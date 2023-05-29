@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Messenger;
 
+use HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -38,8 +39,14 @@ class CreateChatRequest extends FormRequest
         ];
     }
 
-    public function failedValidation(Validator $validator)
+    /**
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(Validator $validator)
     {
-        return response()->json(['errors' => $validator->errors()], 422);
+        throw new HttpResponseException(response()->json([
+            'errors' => $validator->errors(),
+            'message' => 'The given data is invalid.',
+        ], 422));
     }
 }

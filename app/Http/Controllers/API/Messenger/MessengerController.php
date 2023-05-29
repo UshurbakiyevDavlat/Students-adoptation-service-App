@@ -27,7 +27,7 @@ class MessengerController extends Controller
         return ChatsCollection::make($chats);
     }
 
-    public function getChatMessages(PersonalChat $chat)
+    public function getChatMessages(PersonalChat $chat): MessageCollection
     {
         return MessageCollection::make($chat->messages()->get());
     }
