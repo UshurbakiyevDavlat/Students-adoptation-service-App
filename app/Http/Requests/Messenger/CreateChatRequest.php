@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Messenger;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateChatRequest extends FormRequest
 {
@@ -23,8 +25,21 @@ class CreateChatRequest extends FormRequest
      */
     public function rules(): array
     {
+        $authUserId = auth()->user()->getAuthIdentifier();
         return [
-            'receiver' => 'required|integer|exists:users,id',
+            'receiver' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                Rule::unique('personal_chats')->where(function ($query) use ($authUserId) {
+                    $query->where('first_participant', $authUserId);
+                })
+            ]
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
 }

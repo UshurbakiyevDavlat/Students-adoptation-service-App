@@ -34,8 +34,10 @@ class MessengerController extends Controller
 
     public function createChat(CreateChatRequest $request): JsonResponse
     {
+        $validated = $request->validated();
+
         $first_user_id = auth()->user()->getAuthIdentifier();
-        $second_user_id = $request->receiver;
+        $second_user_id = $validated['receiver'];
 
         $data = [
             'first_participant' => $first_user_id,
