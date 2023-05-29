@@ -39,12 +39,9 @@ class CreateChatRequest extends FormRequest
         ];
     }
 
-    /**
-     * @throws HttpResponseException
-     */
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json([
+        throw new \RuntimeException(response()->json([
             'errors' => $validator->errors(),
             'message' => 'The given data is invalid.',
         ], 422));
