@@ -158,6 +158,14 @@ class User extends Authenticatable implements JWTSubject
             ->withPivot('id');
     }
 
+    public function secondUserChats(): BelongsToMany
+    {
+        return $this->belongsToMany(__CLASS__, 'personal_chats', 'second_participant', 'first_participant')
+            ->withTimestamps()
+            ->without('hobbies')
+            ->withPivot('id');
+    }
+
     public function matches(): HasMany
     {
         return $this->hasMany(Matching::class, 'user_id', 'id');

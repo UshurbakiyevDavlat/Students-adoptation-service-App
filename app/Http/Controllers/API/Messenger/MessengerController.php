@@ -18,9 +18,14 @@ class MessengerController extends Controller
     public function getChats(): ChatsCollection
     {
         $user = auth()->user();
-        return ChatsCollection::make($user->userChats()->get());
-    }
 
+        $userChats = $user->userChats()->get();
+        $secondUserChats = $user->secondUserChats()->get();
+
+        $chats = $userChats->concat($secondUserChats);
+
+        return ChatsCollection::make($chats);
+    }
 
     public function getChatMessages(PersonalChat $chat)
     {
