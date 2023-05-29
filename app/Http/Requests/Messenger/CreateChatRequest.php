@@ -38,7 +38,7 @@ class CreateChatRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator)
+    public function failedValidation(Validator $validator)
     {
         return response()->json(['errors' => $validator->errors()], 422);
     }
