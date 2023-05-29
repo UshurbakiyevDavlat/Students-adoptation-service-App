@@ -37,7 +37,7 @@ class MessengerController extends Controller
         $validated = $request->validated();
 
         $first_user_id = auth()->user()->getAuthIdentifier();
-        $second_user_id = $validated['receiver'];
+        $second_user_id = $validated['second_participant'];
 
         $data = [
             'first_participant' => $first_user_id,

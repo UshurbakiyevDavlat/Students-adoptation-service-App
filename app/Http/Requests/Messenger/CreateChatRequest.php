@@ -27,7 +27,7 @@ class CreateChatRequest extends FormRequest
     {
         $authUserId = auth()->user()->getAuthIdentifier();
         return [
-            'receiver' => [
+            'second_participant' => [
                 'required',
                 'integer',
                 'exists:users,id',
