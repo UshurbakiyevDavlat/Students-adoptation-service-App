@@ -44,6 +44,6 @@ class CreateChatRequest extends FormRequest
         throw new \RuntimeException(response()->json([
             'errors' => $validator->errors(),
             'message' => 'The given data is invalid.',
-        ], 422));
+        ], 422),422);
     }
 }
