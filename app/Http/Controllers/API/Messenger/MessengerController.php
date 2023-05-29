@@ -75,8 +75,10 @@ class MessengerController extends Controller
     public function searchChat($name): ChatsCollection
     {
         $chats = PersonalChat::whereHas('secondUser', static function ($query) use ($name) {
-            $query->where('name', 'like', "%{$name}%")
-                ->where('first_participant', auth()->user()->getAuthIdentifier());
+            $lowercaseName = strtolower($name);
+            $query->where('name', 'LIKE', "%{$lowercaseName}%")
+                ->where('first_participant', auth()->user()->getAuthIdentifier())
+                ->orWhere('name', 'LIKE', "%{$lowercaseName}% COLLATE utf8mb4_general_ci");
         })->get();
 
         return ChatsCollection::make($chats);
