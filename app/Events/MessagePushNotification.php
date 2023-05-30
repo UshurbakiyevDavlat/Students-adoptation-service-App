@@ -51,4 +51,14 @@ class MessagePushNotification implements ShouldBroadcastNow
             'message' => $this->message->toArray(),
         ];
     }
+
+    /**
+     * The event's broadcast name.
+     *
+     * @return string
+     */
+    public function broadcastAs(): string
+    {
+        return 'message.created';
+    }
 }
