@@ -44,4 +44,11 @@ class MessagePushNotification implements ShouldBroadcastNow
 
         return new PrivateChannel('chat.' . $this->message->chat_id);
     }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message->toArray(),
+        ];
+    }
 }
