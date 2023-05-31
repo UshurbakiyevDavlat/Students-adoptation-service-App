@@ -23,7 +23,7 @@ Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 
     return [
         'user_id' => $user->id,
-        'message' => $this->message,
+//        'message' => $this->message,
         'time' => now()
     ];
 });
