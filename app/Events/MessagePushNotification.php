@@ -9,7 +9,6 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class MessagePushNotification implements ShouldBroadcast
@@ -35,7 +34,7 @@ class MessagePushNotification implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => base64_encode(Crypt::encryptString($this->message->text)),
+            'message' => utf8_decode($this->message->text),
             'my_message' => $this->message->sender_id === $this->user->id,
             'message_created_at' => $this->message->created_at->toDateTimeString(),
         ];
