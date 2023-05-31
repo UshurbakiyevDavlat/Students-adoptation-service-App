@@ -6,12 +6,12 @@ use App\Models\Messages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class MessagePushNotification implements ShouldBroadcastNow
+class MessagePushNotification implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -31,6 +31,13 @@ class MessagePushNotification implements ShouldBroadcastNow
         $this->user = $user;
     }
 
+    public function broadcastWith(): array
+    {
+        return [
+            'message' => $this->message->text,
+        ];
+    }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -45,22 +52,5 @@ class MessagePushNotification implements ShouldBroadcastNow
             'channel' => $channel
         ]);
         return new Channel($channel);
-    }
-
-    public function broadcastWith(): array
-    {
-        return [
-            'message' => $this->message->toArray(),
-        ];
-    }
-
-    /**
-     * The event's broadcast name.
-     *
-     * @return string
-     */
-    public function broadcastAs(): string
-    {
-        return 'message.created';
     }
 }
