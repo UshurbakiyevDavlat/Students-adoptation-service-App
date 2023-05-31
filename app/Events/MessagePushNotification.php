@@ -35,7 +35,7 @@ class MessagePushNotification implements ShouldBroadcast
     {
         return [
             'message' => $this->message->text,
-            'my_message' => $this->message->user_id === $this->user->id,
+            'my_message' => $this->message->sender_id === $this->user->id,
             'message_created_at' => $this->message->created_at->toDateTimeString(),
         ];
     }
