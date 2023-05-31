@@ -34,7 +34,7 @@ class MessagePushNotification implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'message' => utf8_encode($this->message->text),
+            'message' => utf8_decode($this->message->text),
             'my_message' => $this->message->sender_id === $this->user->id,
             'message_created_at' => $this->message->created_at->toDateTimeString(),
         ];
