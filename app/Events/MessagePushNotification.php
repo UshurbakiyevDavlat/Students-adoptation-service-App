@@ -38,11 +38,13 @@ class MessagePushNotification implements ShouldBroadcastNow
      */
     public function broadcastOn(): Channel|PrivateChannel|array
     {
+        $channel = 'chat.' . $this->message->chat_id;
+
         Log::channel('websockets')->debug('Broadcasting event: MyWebSocketEvent', [
             'payload' => $this->message,
+            'channel' => $channel
         ]);
-
-        return new Channel('chat.' . $this->message->chat_id);
+        return new Channel($channel);
     }
 
     public function broadcastWith(): array
