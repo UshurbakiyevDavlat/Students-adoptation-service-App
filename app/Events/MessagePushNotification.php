@@ -45,12 +45,15 @@ class MessagePushNotification implements ShouldBroadcast
      */
     public function broadcastOn(): Channel|PrivateChannel|array
     {
-        $channel = 'chat.' . $this->message->chat_id;
-
         Log::channel('websockets')->debug('Broadcasting event: MyWebSocketEvent', [
-            'payload' => $this->message,
-            'channel' => $channel
+            'payload' => $this->message
         ]);
-        return new Channel($channel);
+
+        return new Channel('chatMessage');
+    }
+
+    public function broadcastAs(): string
+    {
+        return 'chatMessage';
     }
 }

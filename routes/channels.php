@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PersonalChat;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Log;
 
@@ -14,16 +15,13 @@ use Illuminate\Support\Facades\Log;
 |
 */
 
-Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
+Broadcast::channel('chatMessage', static function ($user, $chatId) {
+    $chat = PersonalChat::findOrFail($chatId);
 
     Log::channel('websockets')->debug('User authorized for channel: ' . $chatId, [
         'user_id' => $user->id,
         'chat_id' => $chatId,
     ]);
 
-    return [
-        'user_id' => $user->id,
-        'message' => $this->message,
-        'time' => now()
-    ];
+    return $chat->firstUser()->first()->id === $user->id || $chat->secondUser()->first()->id === $user->id;
 });
