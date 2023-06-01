@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserLoginRequest;
+use App\Http\Resources\User\User;
 use App\Models\UserEntryCode;
 use App\Services\OtpService;
 use Illuminate\Http\JsonResponse;
@@ -61,11 +62,11 @@ class AuthController extends Controller
     /**
      * Get the authenticated User.
      *
-     * @return JsonResponse
+     * @return User
      */
-    public function me(): JsonResponse
+    public function me(): User
     {
-        return response()->json(auth()->user());
+        return User::make(auth()->user());
     }
 
     /**
