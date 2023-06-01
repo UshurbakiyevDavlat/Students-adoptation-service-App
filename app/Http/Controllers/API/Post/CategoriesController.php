@@ -12,9 +12,9 @@ use Illuminate\Http\JsonResponse;
 
 class CategoriesController extends Controller
 {
-    public function getCategory(PostCategory $postCategory): Category
+    public function getCategory(PostCategory $category): Category
     {
-        return Category::make($postCategory);
+        return Category::make($category);
     }
 
     public function getCategories(): CategoryCollection
