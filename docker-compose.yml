@@ -28,8 +28,9 @@ services:
             - 9000
         volumes:
             - ./:/var/www
-           # - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            # - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
             - ./_docker/app/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+            - ./storage/app/public:/var/www/storage/app/public
         depends_on:
             - db
        # environment:
