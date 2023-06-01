@@ -181,7 +181,7 @@ class UserController extends Controller
     public function uploadAvatar(AvatarUploadRequest $request): JsonResponse
     {
         $validated = $request->validated();
-        $validated['avatar'] = Storage::put('/users/avatar', $validated['image']);
+        $validated['avatar'] = Storage::disk('public')->put('/users/avatar', $validated['image']);
 
         $user = auth()->user();
         $user->avatar = $validated['avatar'];

@@ -21,7 +21,7 @@ class User extends JsonResource
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
-            'avatar' => Storage::url($this->avatar),
+            'avatar' => Storage::disk('public')->url($this->avatar),
             'hobbies' => $this->hobbies ,
             'city' => $this->city ,
             'university' => $this->university ,
