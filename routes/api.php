@@ -39,6 +39,8 @@ Route::group([
 });
 
 //TODO сделать отдельный канал для логов
+//TODO Отрефакторить, а то неоч
+
 Route::get('/setLocale/{locale}', [LocaleController::class, 'setLocale']);
 
 Route::prefix('send')->group(
@@ -51,12 +53,15 @@ Route::prefix('user')->group(
         Route::get('/{user}', [UserController::class, 'show'])->name('user.show');
         Route::get('/', [UserController::class, 'index'])->name('user.index');
         Route::post('/', [UserController::class, 'create'])->name('user.create');
+
         Route::post('/profile', [UserProfileController::class, 'fillProfile'])
             ->middleware('auth:api')
             ->name('profile.update');
+
         Route::post('/reset-password', [UserController::class, 'resetPassword'])
             ->middleware('guest')
             ->name('password.update');
+
         Route::delete('/{user}', [UserController::class, 'delete'])
             ->middleware(['auth:api', 'admin'])
             ->name('user.delete');
@@ -64,6 +69,10 @@ Route::prefix('user')->group(
         Route::post('/saveDeviceToken', [UserController::class, 'saveDeviceToken'])
             ->middleware('auth:api')
             ->name('user.saveDeviceToken');
+
+        Route::post('/uploadAvatar', [UserController::class,'uploadAvatar'])
+            ->middleware('auth:api')
+            ->name('user.uploadAvatar');
     });
 
 Route::group(['prefix' => 'friends', 'middleware' => 'auth:api'], static function () {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\User\AvatarUploadRequest;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Resources\User\User as UserResource;
 use App\Http\Resources\User\UserCollection;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
@@ -174,5 +176,17 @@ class UserController extends Controller
         $user->save();
 
         return response()->json(['status' => 200, 'message' => 'Device id saved']);
+    }
+
+    public function uploadAvatar(AvatarUploadRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $validated['avatar'] = Storage::put('/users/avatar', $validated['image']);
+
+        $user = auth()->user();
+        $user->avatar = $validated['avatar'];
+        $user->save();
+
+        return response()->json(['status' => 200, 'message' => 'Avatar uploaded']);
     }
 }
