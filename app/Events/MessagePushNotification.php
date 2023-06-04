@@ -11,6 +11,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use JsonException;
 
 class MessagePushNotification implements ShouldBroadcast
 {
@@ -32,9 +33,12 @@ class MessagePushNotification implements ShouldBroadcast
         $this->user = $user;
     }
 
+    /**
+     * @throws JsonException
+     */
     public function broadcastWith(): array
     {
-        return (new WebsocketResource($this->message))->toArray(request());
+        return json_decode(json_encode((new WebsocketResource($this->message))->toArray(request()), JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
