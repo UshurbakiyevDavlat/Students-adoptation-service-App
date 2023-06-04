@@ -15,11 +15,14 @@ class WebsocketResource extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
-        $message = mb_convert_encoding($this->text, 'UTF-8');
+        $message = $this->text;
+        $senderId = $this->sender_id;
+        $createdAt = $this->created_at->toDateTimeString();
+
         return [
             'message' => $message,
-            'sender_id' => $this->sender_id,
-            'message_created_at' => $this->created_at->toDateTimeString(),
+            'sender_id' => $senderId,
+            'message_created_at' => $createdAt,
         ];
     }
 }

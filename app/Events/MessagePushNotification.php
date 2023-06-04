@@ -32,9 +32,13 @@ class MessagePushNotification implements ShouldBroadcast
         $this->user = $user;
     }
 
-    public function broadcastWith(): array
+    /**
+     * @throws \JsonException
+     */
+    public function broadcastWith(): bool|string
     {
-        return (new WebsocketResource($this->message))->toArray(request());
+        $data = (new WebsocketResource($this->message))->toArray(request());
+        return json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
     }
 
     /**
