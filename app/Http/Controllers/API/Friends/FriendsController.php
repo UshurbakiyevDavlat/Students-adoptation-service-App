@@ -32,7 +32,7 @@ class FriendsController extends Controller
 
     public function getFriendsRequestsList(User $user): FriendRequestCollection
     {
-        return FriendRequestCollection::make($user->friendsRequests()->with('friend')->get());
+        return FriendRequestCollection::make($user->friendsRequests()->with('user')->get());
     }
 
 
