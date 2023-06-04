@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Helpers\Helpers;
 use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,6 +13,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Helpers\Helpers;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -137,12 +137,12 @@ class User extends Authenticatable implements JWTSubject
 
     public function friends(): HasMany
     {
-        return $this->hasMany(UserFriend::class, 'user_id', 'id')->with(['user', 'friend']);
+        return $this->hasMany(UserFriend::class, 'user_id', 'id');
     }
 
     public function friendsRequests(): HasMany
     {
-        return $this->hasMany(UserFriendRequest::class, 'friend_id', 'id')->with(['user', 'friend']);
+        return $this->hasMany(UserFriendRequest::class, 'friend_id', 'id');
     }
 
     public function userFriendRequests(): HasMany
