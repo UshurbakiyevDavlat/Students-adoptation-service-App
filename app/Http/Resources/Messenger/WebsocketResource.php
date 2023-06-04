@@ -16,9 +16,9 @@ class WebsocketResource extends JsonResource
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
         return [
-            'message' => $this->message->text,
-            'sender_id' => $this->message->sender_id,
-            'message_created_at' => $this->message->created_at->toDateTimeString(),
+            'message' => $this->text,
+            'sender_id' => $this->sender_id,
+            'message_created_at' => $this->created_at->toDateTimeString(),
         ];
     }
 }
