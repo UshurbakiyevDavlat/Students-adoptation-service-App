@@ -15,8 +15,9 @@ class WebsocketResource extends JsonResource
      */
     public function toArray($request): array|\JsonSerializable|Arrayable
     {
+        $message = mb_convert_encoding($this->text, 'UTF-8');
         return [
-            'message' => $this->text,
+            'message' => $message,
             'sender_id' => $this->sender_id,
             'message_created_at' => $this->created_at->toDateTimeString(),
         ];
