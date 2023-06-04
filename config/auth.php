@@ -16,6 +16,7 @@ return [
     'defaults' => [
         'guard' => 'api',
         'passwords' => 'users',
+        'json' => JSON_UNESCAPED_UNICODE, // Add this line
     ],
 
     /*
