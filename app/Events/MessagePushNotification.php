@@ -6,7 +6,6 @@ use App\Http\Resources\Messenger\WebsocketResource;
 use App\Models\Messages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -40,9 +39,9 @@ class MessagePushNotification implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|PrivateChannel|array
+     * @return Channel|array
      */
-    public function broadcastOn(): Channel|PrivateChannel|array
+    public function broadcastOn(): Channel|array
     {
         Log::channel('websockets')->debug('Broadcasting event: MyWebSocketEvent', [
             'payload' => $this->message
