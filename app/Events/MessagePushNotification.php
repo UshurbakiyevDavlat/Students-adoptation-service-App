@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\Messenger\WebsocketResource;
 use App\Models\Messages;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -33,11 +34,7 @@ class MessagePushNotification implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        return [
-            'message' => utf8_encode($this->message->text),
-            'sender_id' => $this->message->sender_id,
-            'message_created_at' => $this->message->created_at->toDateTimeString(),
-        ];
+        return (new WebsocketResource($this->message))->toArray(request());
     }
 
     /**
