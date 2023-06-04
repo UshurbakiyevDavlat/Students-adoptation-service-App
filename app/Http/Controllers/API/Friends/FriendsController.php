@@ -32,18 +32,13 @@ class FriendsController extends Controller
 
     public function getFriendsRequestsList(User $user): FriendRequestCollection
     {
-        return FriendRequestCollection::make($user->friendsRequests()->paginate());
+        return FriendRequestCollection::make($user->friendsRequests()->get());
     }
 
-    public function getMyFriendsRequestList(): FriendRequestCollection
-    {
-        $user = auth()->user();
-        return FriendRequestCollection::make($user->userFriendRequests()->paginate());
-    }
 
     public function getFriendsList(User $user): FriendCollection
     {
-        return FriendCollection::make($user->friends()->paginate());
+        return FriendCollection::make($user->friends()->get());
     }
 
     public function createFriendRequest(FriendRequestCreateRequest $request): JsonResponse
@@ -57,29 +52,15 @@ class FriendsController extends Controller
 
     }
 
-    public function updateFriendRequest(FriendRequestUpdateRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        $userFriendRequest = UserFriendRequest::where('user_id', $data['user_id'])
-            ->where('friend_id', $data['friend_id'])
-            ->whereNotNull('deleted_at')
-            ->first();
-
-        $userFriendRequest->status = $data['status'];
-        $userFriendRequest->save();
-
-        if ($data['status'] === FriendStatus::DELETED) {
-            $userFriendRequest->delete();
-        }
-
-        return response()->json(['message' => __('friend_request_success_update'), 'request' => $userFriendRequest]);
-    }
-
     public function addFriend(FriendCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
 
         $userSide = UserFriend::create($data);
+
+        UserFriendRequest::where('user_id', $data['user_id'])
+            ->where('friend_id', $data['friend_id'])
+            ->update(['status' => FriendStatus::ACTIVE]);
 
         (new Helpers())->swap($data['user_id'], $data['friend_id']);
 

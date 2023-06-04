@@ -78,10 +78,8 @@ Route::prefix('user')->group(
 Route::group(['prefix' => 'friends', 'middleware' => 'auth:api'], static function () {
     Route::prefix('request')->group(
         static function () {
-            Route::get('/self/list', [FriendsController::class, 'getMyFriendsRequestList'])->name('my.friend.request.list');
             Route::get('{user}/list', [FriendsController::class, 'getFriendsRequestsList'])->name('friend.request.list');
             Route::post('/create', [FriendsController::class, 'createFriendRequest'])->name('friend.create_friends_request');
-            Route::patch('/update', [FriendsController::class, 'updateFriendRequest'])->name('friend.update_friends_request');
         }
     );
     Route::get('{user}/list', [FriendsController::class, 'getFriendsList'])->name('friend.get_friends_list');
