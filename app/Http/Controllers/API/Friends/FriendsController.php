@@ -32,13 +32,13 @@ class FriendsController extends Controller
 
     public function getFriendsRequestsList(User $user): FriendRequestCollection
     {
-        return FriendRequestCollection::make($user->friendsRequests()->with('user')->get());
+        return FriendRequestCollection::make($user->friendsRequests()->with(['user','friend'])->get());
     }
 
 
     public function getFriendsList(User $user): FriendCollection
     {
-        return FriendCollection::make($user->friends()->with('user')->get());
+        return FriendCollection::make($user->friends()->with(['user','friend'])->get());
     }
 
     public function createFriendRequest(FriendRequestCreateRequest $request): JsonResponse
