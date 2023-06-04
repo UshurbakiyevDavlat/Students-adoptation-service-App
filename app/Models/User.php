@@ -84,11 +84,6 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function friend(): BelongsTo
-    {
-        return $this->belongsTo(__CLASS__, 'friend_id');
-    }
-
     public function hobbies(): BelongsToMany
     {
         return $this->belongsToMany(Hobby::class, 'user_has_hobbies', 'user_id', 'hobby_id')->withTimestamps();
