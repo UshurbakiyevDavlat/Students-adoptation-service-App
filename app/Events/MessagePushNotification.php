@@ -31,20 +31,9 @@ class MessagePushNotification implements ShouldBroadcast
         $this->user = $user;
     }
 
-    /**
-     * @throws \JsonException
-     */
     public function broadcastWith(): array
     {
-        $data = (new WebsocketResource($this->message))->toArray(request());
-
-        $encodedData = json_encode($data, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE);
-
-        return [
-            'channel' => 'chatMessage',
-            'event' => 'chatMessage',
-            'data' => $encodedData,
-        ];
+        return (new WebsocketResource($this->message))->toArray(request());
     }
 
     /**
