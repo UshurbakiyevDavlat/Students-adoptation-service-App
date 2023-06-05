@@ -13,7 +13,7 @@ trait ModelFilterTrait
     {
         $this->filteredResult = QueryBuilder::for(self::class)
             ->allowedFilters($filters)
-            ->where('user_id', '!=', auth()->id())
+            ->where('id', '!=', auth()->id())
             ->orderByDesc('created_at')
             ->get();
 
