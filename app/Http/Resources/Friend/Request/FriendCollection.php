@@ -16,6 +16,7 @@ class FriendCollection extends ResourceCollection
     public function toArray($request)
     {
         $data = parent::toArray($request);
+        dd($data);
         $data['avatar'] = Storage::url($data['avatar']);
         return $data;
     }

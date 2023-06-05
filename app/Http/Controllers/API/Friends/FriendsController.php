@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Friend\FriendCreateRequest;
 use App\Http\Requests\Friend\FriendDeleteRequest;
 use App\Http\Requests\Friend\FriendRequestCreateRequest;
-use App\Http\Requests\Friend\FriendRequestUpdateRequest;
 use App\Http\Resources\Friend\Friend;
 use App\Http\Resources\Friend\FriendCollection;
 use App\Http\Resources\Friend\Request\Friend as FriendRequest;
