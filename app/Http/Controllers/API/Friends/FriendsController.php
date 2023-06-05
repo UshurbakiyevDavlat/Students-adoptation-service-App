@@ -31,7 +31,7 @@ class FriendsController extends Controller
 
     public function getFriendsRequestsList(User $user): FriendRequestCollection
     {
-        return FriendRequestCollection::make($user->friendsRequests()->with(['user','friends'])->get()->where('status', 0));
+        return FriendRequestCollection::make($user->friendsRequests()->with(['user','friends'])->where('status', 0)->get());
     }
 
 
