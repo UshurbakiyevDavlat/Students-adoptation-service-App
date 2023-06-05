@@ -17,7 +17,7 @@ class FriendCollection extends ResourceCollection
     {
         $data =  parent::toArray($request);
         foreach ($data as $key => $value) {
-            $data[$key]['user']['avatar'] = Storage::url($value['user']['avatar']);
+            $data[$key]['user']['avatar'] = Storage::disk('public')->url($value['user']['avatar']);
         }
         return $data;
     }
