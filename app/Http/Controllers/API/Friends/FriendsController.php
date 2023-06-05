@@ -59,7 +59,7 @@ class FriendsController extends Controller
 
         UserFriendRequest::where('user_id', $data['user_id'])
             ->where('friend_id', $data['friend_id'])
-            ->update(['status' => FriendStatus::ACTIVE]);
+            ->delete();
 
         (new Helpers())->swap($data['user_id'], $data['friend_id']);
 
