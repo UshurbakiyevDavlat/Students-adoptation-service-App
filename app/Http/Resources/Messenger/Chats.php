@@ -6,6 +6,7 @@ use App\Models\PersonalChat;
 use App\Models\User;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class Chats extends JsonResource
 {
@@ -26,7 +27,7 @@ class Chats extends JsonResource
         return [
             'chat_id' => $this->pivot?->id ?: $this->id,
             'ownerName' => $this->name ?: $partner?->name,
-            'owner_avatar' => $this->avatar ?: $partner?->avatar,
+            'owner_avatar' => Storage::disk('public')->url($this->avatar) ?: Storage::disk('public')->url($partner?->avatar),
             'dialog_created_at' => $this->pivot?->created_at ?: $this->created_at,
             'dialog_last_message' => Message::make($chat?->messages()->latest()->first()),
         ];
