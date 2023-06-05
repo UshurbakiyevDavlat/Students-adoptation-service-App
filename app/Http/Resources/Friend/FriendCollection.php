@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Friend;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Support\Facades\Storage;
 
 class FriendCollection extends ResourceCollection
 {
@@ -14,6 +15,8 @@ class FriendCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $data =  parent::toArray($request);
+        $data['avatar'] = Storage::url($data['avatar']);
+        return $data;
     }
 }
