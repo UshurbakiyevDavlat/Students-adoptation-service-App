@@ -94,6 +94,7 @@ class UserController extends Controller
         $userData = $request->validated();
         $userData['password'] = Hash::make($userData['password']);
         $userData['uuid'] = Str::uuid();
+        $userData['avatar'] = 'users/avatar/default.png';
 
         $entryCode = UserEntryCode::where('code', $userData['code'])
             ->where('used', 0)
