@@ -66,7 +66,7 @@ class TinderController extends Controller
             ], 500);
         }
 
-        return response()->json(['User' => $matchingUser]);
+        return response()->json(['User' => \App\Http\Resources\User\User::make($matchingUser)]);
 
     }
 
