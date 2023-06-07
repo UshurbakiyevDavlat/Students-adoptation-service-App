@@ -94,7 +94,9 @@ class TinderController extends Controller
         });
 
         if ($status) {
-            $user->friendsRequests()->attach($partner->id);
+            $user->friendsRequests()->create([
+                'friend_id' => $partner->id,
+            ]);
         }
 
         return response()->json(['message' => $status ? 'User was liked!' : 'User was disliked']);
