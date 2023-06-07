@@ -95,6 +95,7 @@ class TinderController extends Controller
 
         if ($status) {
             $user->friendsRequests()->create([
+                'user_id' => $user->id,
                 'friend_id' => $partner->id,
             ]);
         }
