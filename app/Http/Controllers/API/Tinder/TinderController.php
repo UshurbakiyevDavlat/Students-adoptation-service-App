@@ -85,8 +85,8 @@ class TinderController extends Controller
                 $match->save();
 
                 $user->friendsRequests()->create([
-                    'user_id' => $match->user_id,
-                    'friend_id' => $match->partner_id,
+                    'user_id' => $user->id,
+                    'friend_id' => $partner->id,
                 ]);
             }
         });
