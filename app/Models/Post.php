@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\ModelFilterTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,12 +20,20 @@ class Post extends Model
     protected $fillable = [
         'title',
         'description',
-        'body'
+        'body',
+        'user_id',
     ];
 
-    public function user(): BelongsToMany
+    protected $with = ['likedUsers','categories'];
+
+    public function user(): BelongsTo
     {
-        return $this->belongsToMany(User::class, 'users_post', 'post_id', 'user_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function likedUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'users_post', 'post_id', 'author_id')->without(['hobbies']);
     }
 
     public function mediaFiles(): HasMany
@@ -40,7 +49,7 @@ class Post extends Model
 
     public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(PostCategory::class, 'post_has_categories', 'post_id', 'category_id');
+        return $this->belongsToMany(PostCategory::class, 'post_has_categories', 'post_id', 'category_id')->withTimestamps();
     }
 
     public function comments(): HasMany

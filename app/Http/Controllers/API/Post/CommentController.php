@@ -26,6 +26,7 @@ class CommentController extends Controller
     public function createComment(CommentCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $data['user_id'] = auth()->user()->id;
         $comment = Comment::create($data);
         return response()->json(['message' => 'comment_success_creation', 'data' => $comment], 201);
     }

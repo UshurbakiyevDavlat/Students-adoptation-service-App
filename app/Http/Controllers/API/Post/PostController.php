@@ -8,15 +8,23 @@ use App\Http\Requests\Post\PostUpdateRequest;
 use App\Http\Resources\Post\Post as PostResource;
 use App\Http\Resources\Post\PostCollection;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
 
-    public function getPosts(): PostCollection
+    public function getPosts(int $category): JsonResponse|PostCollection
     {
-        return PostCollection::make((new Post())->setFilters(['description', 'title'])->getFiltered());
+        if ($category === 0) {
+            return PostCollection::make(Post::all());
+        }
+
+        $validate = validator(['category' => $category], ['category' => 'integer|exists:post_categories,id']);
+        $validate->fails() ? abort(404) : $category = $validate->validated()['category'];
+
+        return PostCollection::make(Post::whereHas('categories', static function ($query) use ($category) {
+            $query->where('category_id', $category);
+        })->get());
     }
 
     public function getPost(Post $post): PostResource
@@ -24,36 +32,55 @@ class PostController extends Controller
         return PostResource::make($post);
     }
 
-    public function getSavedPosts(User $user): PostCollection
+    public function getSavedPosts(): PostCollection
     {
-        return PostCollection::make($user->savedPosts()->paginate());
+        return PostCollection::make(auth()->user()->savedPosts()->paginate());
     }
 
     public function likePost(Post $post): JsonResponse
     {
-        $post->likes()
+        $alreadyLiked = $post->likes()
             ->where('author_id', auth()->user()->id)
             ->withPivot('liked')
             ->first()
-            ->pivot->update(['liked' => 1]);
+            ?->pivot
+            ?->liked;
 
-        return response()->json(['message' => 'Post liked']);
+        if ($alreadyLiked) {
+            $post->likes()->detach(auth()->user()->id);
+        } else {
+            $post->likes()->attach(auth()->user()->id, ['liked' => 1, 'created_at' => now(), 'updated_at' => now()]);
+        }
+
+        return response()->json(['message' => !$alreadyLiked ? 'Post liked' : 'Post unliked', 'isLiked' => !$alreadyLiked]);
     }
 
     public function savePost(Post $post): JsonResponse
     {
-        $post->savedPosts()->attach(auth()->user()->id);
-        return response()->json(['message' => 'Post saved']);
+        $alreadySaved = $post->savedPosts()
+            ->where('user_ID', auth()->user()->id)
+            ->first();
+
+        if ($alreadySaved) {
+            $post->savedPosts()->detach(auth()->user()->id);
+        } else {
+            $post->savedPosts()->attach(auth()->user()->id, ['created_at' => now(), 'updated_at' => now()]);
+        }
+
+        return response()->json(['message' => !$alreadySaved ? 'Post saved' : 'Post unsaved']);
     }
 
     public function addPost(PostCreateRequest $request): JsonResponse
     {
         $data = $request->validated();
-        $post = Post::create($data);
-        $user = auth()->user();
-        $user->posts()->save($post);
+        $postCategories = $data['categories_ids'];
+        unset($data['categories_ids']);
 
-        return response()->json(['message' => 'Post created', 'post' => $post]);
+        $data['user_id'] = auth()->user()->id;
+        $post = Post::create($data);
+        $post->categories()->attach($postCategories);
+
+        return response()->json(['message' => 'Post created', 'post' => $post->with('categories')->find($post->id)]);
     }
 
     public function editPost(Post $post, PostUpdateRequest $request): JsonResponse

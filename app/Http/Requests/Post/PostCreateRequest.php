@@ -29,6 +29,8 @@ class PostCreateRequest extends FormRequest
             'title'=> 'required|string|max:255',
             'description'=> 'required|string|max:255',
             'body' => 'required|string',
+            'categories_ids' => 'required|array',
+            'categories_ids.*' => 'required|integer|exists:post_categories,id',
         ];
     }
 

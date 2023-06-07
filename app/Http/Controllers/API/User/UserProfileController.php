@@ -9,8 +9,9 @@ use Illuminate\Http\JsonResponse;
 
 class UserProfileController extends Controller
 {
-    public function fillProfile(User $user, UserFillProfileRequest $request): JsonResponse
+    public function fillProfile(UserFillProfileRequest $request): JsonResponse
     {
+        $user = auth()->user();
         $data = $request->validated();
         $user->update($data);
 

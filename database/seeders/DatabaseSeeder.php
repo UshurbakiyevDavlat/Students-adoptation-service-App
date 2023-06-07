@@ -21,12 +21,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        City::factory(10)->create();
-        Hobby::factory(10)->create();
-        University::factory(10)->create();
-        Speciality::factory(10)->create();
+        City::factory(10)->create()->unique('title');
+        Hobby::factory(10)->create()->unique('title');
+        University::factory(10)->create()->unique('title');
+        Speciality::factory(10)->create()->unique('title');
         User::factory(10)->create();
-        UserHasHobbies::factory(10)->create();
+        UserHasHobbies::factory(10)->create(); //TODO что за фигня? Сделать нормально через createMany, и удали модель..
 
         $admin = Role::create(['name' => 'admin']);
         $user = Role::create(['name' => 'user']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\User\AvatarUploadRequest;
 use App\Http\Requests\User\UserCreateRequest;
 use App\Http\Resources\User\User as UserResource;
 use App\Http\Resources\User\UserCollection;
@@ -12,9 +13,11 @@ use App\Models\UserEntryCode;
 use App\Notifications\ResetPassword;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use OpenApi\Annotations as OA;
 
@@ -108,7 +111,11 @@ class UserController extends Controller
         $entryCode->save();
         DB::commit();
 
-        return $errors ?: UserResource::make($user);
+        $credentials = $request->only(['phone', 'password']);
+        $token = auth()->attempt($credentials);
+        $user->token = (object)['access_token' => $token];
+
+        return $errors ?: UserResource::make($user)->response()->setStatusCode(200);
     }
 
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
@@ -156,8 +163,30 @@ class UserController extends Controller
         return $user->delete();
     }
 
-    public function getComments()
+    public function saveDeviceToken(Request $request): JsonResponse
     {
+        $deviceId = $request->deviceId ?? null;
 
+        if (!$deviceId) {
+            return response()->json(['status' => 400, 'message' => 'Device id is required']);
+        }
+
+        $user = auth()->user();
+        $user->fcm_token = $deviceId;
+        $user->save();
+
+        return response()->json(['status' => 200, 'message' => 'Device id saved']);
+    }
+
+    public function uploadAvatar(AvatarUploadRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $validated['avatar'] = Storage::disk('public')->put('/users/avatar', $validated['image']);
+
+        $user = auth()->user();
+        $user->avatar = $validated['avatar'];
+        $user->save();
+
+        return response()->json(['status' => 200, 'message' => 'Avatar uploaded']);
     }
 }

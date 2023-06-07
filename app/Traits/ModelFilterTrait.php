@@ -13,7 +13,9 @@ trait ModelFilterTrait
     {
         $this->filteredResult = QueryBuilder::for(self::class)
             ->allowedFilters($filters)
-            ->paginate();
+            ->where('id', '!=', auth()->id())
+            ->orderByDesc('created_at')
+            ->get();
 
         return $this;
     }

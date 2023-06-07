@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CityFactory extends Factory
@@ -11,10 +12,28 @@ class CityFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
+        $dictCities = [
+            'Astana',
+            'Almaty',
+            'Shymkent',
+            'Karaganda',
+            'Aktobe',
+            'Taraz',
+            'Pavlodar',
+            'Kyzylorda',
+            'Atyrau',
+            'Kokshetau'
+        ];
+        $randomElement = $this->faker->unique()->randomElement($dictCities);
+
+        while (City::all()->has($randomElement)) {
+            $randomElement = $this->faker->unique()->randomElement($dictCities);
+        }
+
         return [
-            'title' => $this->faker->city
+            'title' => $randomElement
         ];
     }
 }

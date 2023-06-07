@@ -7,6 +7,7 @@ services:
             - ./_docker/nginx/conf.d/:/etc/nginx/conf.d/
         ports:
             - "80:80"
+            - "443:443"
         restart: unless-stopped
         depends_on:
             - app
@@ -27,13 +28,14 @@ services:
             - 9000
         volumes:
             - ./:/var/www
-            - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+            # - ./_docker/app/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
             - ./_docker/app/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+            - ./storage/app/public:/var/www/storage/app/public
         depends_on:
             - db
-        environment:
-            - PHP_IDE_CONFIG=serverName=docker
-            - XDEBUG_CONFIG=remote_host=192.168.1.110
+       # environment:
+          #  - PHP_IDE_CONFIG=serverName=docker
+           # - XDEBUG_CONFIG=remote_host=192.168.1.110
         logging:
             driver: 'json-file'
             options:
@@ -46,15 +48,17 @@ services:
 
 
     db: # docker-compose exec db bash =>  mysql -u root -p => show databases;
-        image: mysql:5.7
+        image: mysql:8.0
         restart: always
         volumes:
             - ./tmp/db:/var/lib/mysql
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: root
+            MYSQL_PASSWORD: ${DB_PASSWORD}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
         ports:
-            - "3306:3306"
+            - "3307:3306"
         logging:
             driver: 'json-file'
             options:
@@ -77,22 +81,16 @@ services:
         networks:
             - diploma
 
-    #docker run -d -v /elasticsearch/data:/usr/share/elasticsearch/data -p 9200:9200 -p 9300:9300 --name elasticsearch_docker_diploma elasticsearch:2.4.1 -Des.cluster.name="elasticsearch_docker_diploma"
-# TODO Закоменченно, пока не решится вопрос на сервере
-#    elasticsearch:
-#        container_name: elasticsearch_docker_diploma
-#        image: library/elasticsearch:8.6.0  #TODO нужно следить за версиями, если слишком старая версия, то не будут работать ноды в elastic
-#        environment:
-#            - Des.cluster.name=diplomas-data-cluster
-#            - xpack.security.enabled=false
-#            - "discovery.type=single-node"
-#        volumes:
-#            - diplomas-data:/usr/share/elasticsearch/data
-#        ports:
-#            - '9200:9200'
-#            - '9300:9300'
-#        networks:
-#            - diploma
+    worker:
+        image: diploma
+        command: [ 'php', 'artisan', 'queue:work' ]
+        container_name: worker_docker_diploma
+        restart: unless-stopped
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+        networks:
+            - diploma
 
 networks:
     diploma:
