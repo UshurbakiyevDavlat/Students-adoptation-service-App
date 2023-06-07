@@ -44,7 +44,7 @@ class TinderController extends Controller
         $matchingUser = $matchingUsers->first();
 
         if ($user->matches()->where('partner_id', $matchingUser->id)->first()) {
-            return response()->json(['user' => $matchingUser]);
+            return response()->json(['user' => \App\Http\Resources\User\User::make($matchingUser)]);
         }
 
         DB::beginTransaction();
