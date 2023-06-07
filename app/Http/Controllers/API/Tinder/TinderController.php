@@ -85,10 +85,12 @@ class TinderController extends Controller
                 $match->is_match = $liked;
                 $match->save();
 
-                UserFriendRequest::create([
-                    'user_id' => $match->user_id,
-                    'friend_id' => $match->partner_id,
-                ]);
+                if ($liked === 1) {
+                    UserFriendRequest::create([
+                        'user_id' => $match->user_id,
+                        'friend_id' => $match->partner_id,
+                    ]);
+                }
             }
         });
 
