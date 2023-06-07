@@ -34,9 +34,10 @@ class FriendCreateRequest extends FormRequest
                             ['user_id', $this->user_id],
                             ['friend_id', $this->friend_id],
                         ]);
-                    })->where(function ($query) {
-                        return $query->where('user_id', '!=', 'friend_id');
-                    })
+                    }),
+                Rule::when(function () {
+                    return $this->user_id === $this->friend_id;
+                }, ['required', 'different:friend_id'])
             ],
             'friend_id' => 'int|exists:users,id'
         ];
