@@ -79,10 +79,15 @@ class TinderController extends Controller
         $matches = $user->matches()->get();
         $partner_matches = $user->matchedBy()->get();
 
-        $matches->each(function ($match) use ($partner, $liked) {
+        $matches->each(function ($match) use ($partner, $liked, $user) {
             if ($match->partner_id == $partner->id) {
                 $match->is_match = $liked;
                 $match->save();
+
+                $user->friendsRequests()->create([
+                    'user_id' => $match->user_id,
+                    'friend_id' => $match->partner_id,
+                ]);
             }
         });
 
@@ -92,13 +97,6 @@ class TinderController extends Controller
                 $match->save();
             }
         });
-
-        if ($status) {
-            $user->friendsRequests()->create([
-                'user_id' => $user->id,
-                'friend_id' => $partner->id,
-            ]);
-        }
 
         return response()->json(['message' => $status ? 'User was liked!' : 'User was disliked']);
     }
