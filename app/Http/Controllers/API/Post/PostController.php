@@ -16,7 +16,7 @@ class PostController extends Controller
     public function getPosts(int $category): JsonResponse|PostCollection
     {
         if ($category === 0) {
-            return PostCollection::make(Post::all());
+            return PostCollection::make(Post::all()->sortByDesc('created_at'));
         }
 
         $validate = validator(['category' => $category], ['category' => 'integer|exists:post_categories,id']);
