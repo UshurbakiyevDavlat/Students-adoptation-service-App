@@ -24,7 +24,7 @@ class PostController extends Controller
 
         return PostCollection::make(Post::whereHas('categories', static function ($query) use ($category) {
             $query->where('category_id', $category);
-        })->get());
+        })->get()->sortByDesc('created_at'));
     }
 
     public function getPost(Post $post): PostResource
