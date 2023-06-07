@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Tinder;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserFriendRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -84,9 +85,9 @@ class TinderController extends Controller
                 $match->is_match = $liked;
                 $match->save();
 
-                $user->friendsRequests()->create([
-                    'user_id' => $user->id,
-                    'friend_id' => $partner->id,
+                UserFriendRequest::create([
+                    'user_id' => $match->user_id,
+                    'friend_id' => $match->partner_id,
                 ]);
             }
         });
