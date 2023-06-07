@@ -58,7 +58,7 @@ class FriendsController extends Controller
         $userSide = UserFriend::create($data);
 
         UserFriendRequest::where('user_id', $data['user_id'])
-            ->where('friend_id', $data['friend_id'])
+           ->orWhere('user_id', $data['friend_id'])
             ->delete();
 
         (new Helpers())->swap($data['user_id'], $data['friend_id']);
