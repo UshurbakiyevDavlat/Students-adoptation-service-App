@@ -15,9 +15,9 @@ class UserProfileController extends Controller
         $data = $request->validated();
         $user->update($data);
 
-        if (isset($data['hobbies_ids'])) {
-            $hobbies_ids = $data['hobbies_ids'];
-            unset($data['hobbies_ids']);
+        if (isset($data['hobbies'])) {
+            $hobbies_ids = $data['hobbies'];
+            unset($data['hobbies']);
             $user->hobbies()->sync($hobbies_ids);
         }
 

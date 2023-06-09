@@ -27,12 +27,12 @@ class UserFillProfileRequest extends FormRequest
     {
         return [
             'name' => 'string',
-            'email' => 'string|email',
+            'email' => 'string',
             'birth_date' => 'date',
             'city_id' => 'int|exists:cities,id',
             'university_id' => 'int|exists:universities,id',
             'speciality_id' => 'int|exists:specialities,id',
-            'hobbies_ids' => 'array',
+            'hobbies' => 'array',
         ];
     }
 
