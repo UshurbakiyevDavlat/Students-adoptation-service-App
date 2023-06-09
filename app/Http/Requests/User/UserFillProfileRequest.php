@@ -32,7 +32,7 @@ class UserFillProfileRequest extends FormRequest
             'city_id' => 'int|exists:cities,id',
             'university_id' => 'int|exists:universities,id',
             'speciality_id' => 'int|exists:specialities,id',
-            'hobbies' => 'array',
+            'hobbies_ids' => 'array',
         ];
     }
 
